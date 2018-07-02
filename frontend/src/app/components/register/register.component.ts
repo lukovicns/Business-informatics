@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { fadeIn } from '../../../animations';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) { }
 
   registerForm = this.formBuilder.group({
@@ -40,7 +42,9 @@ export class RegisterComponent implements OnInit {
   });
 
   ngOnInit() {
-    
+    if (this.userService.getCurrentUser() != null) {
+      this.router.navigate(['/']);
+    }
   }
 
   register() {

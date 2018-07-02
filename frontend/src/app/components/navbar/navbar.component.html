@@ -12,17 +12,17 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/register" routerLinkActive="active">
+        <a class="nav-link" routerLink="/register" routerLinkActive="active" *ngIf="!userIsLoggedIn()">
           <i class="fas fa-user-plus"></i>&nbsp;&nbsp;Register
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/login" routerLinkActive="active">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active" *ngIf="!userIsLoggedIn()">
           <i class="fas fa-power-off"></i>&nbsp;Login
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" (click)="logout()" id="logout">
+        <a class="nav-link" (click)="logout()" id="logout" *ngIf="userIsLoggedIn()">
           <i class="fas fa-power-off"></i>&nbsp;Logout
         </a>
       </li>

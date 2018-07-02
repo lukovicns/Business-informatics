@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { fadeIn } from '../../../animations';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,12 @@ import { UserService } from '../../services/user/user.service';
 })
 export class LoginComponent implements OnInit {
 
+  private errorMessage: string;
+
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) { }
 
   loginForm = this.formBuilder.group({
@@ -28,10 +32,19 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit() {
-    
+    if (this.userService.getCurrentUser() != null) {
+      this.router.navigate(['/']);
+    }
   }
 
   login() {
-    this.userService.login();
+    this.userService.login(this.loginForm.value)
+    .subscribe(res => {
+      localStorage.setItem('token', res['token']);
+      this.router.navigate(['/']);
+    }, err => {
+      this.errorMessage = err['error'];
+      document.querySelector('#password')['value'] = '';
+    });
   }
 }

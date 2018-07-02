@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import * as decode from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
+import { url } from '../../../url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getCurrentUser() {
     let payload = null;
@@ -16,8 +18,8 @@ export class UserService {
     return payload;
   }
 
-  login() {
-    
+  login(user) {
+    return this.http.post(url + 'klijenti/login', user);
   }
 
   register() {
