@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<div [@fadeIn]>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active">Login</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h1>Login here</h1>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="form-group">
+              <label for="email">Email address</label>
+              <input formControlName="email" type="email" class="form-control" id="email" placeholder="Enter your email here">
+          </div>
+          <div class="form-group">
+              <label for="password">Password (min.8 characters)</label>
+              <input formControlName="password" type="password" class="form-control" id="password" placeholder="Enter your password here" min="8"> 
+          </div>
+          <button type="submit" class="btn btn-info btn-block" [disabled]="!loginForm.valid">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
