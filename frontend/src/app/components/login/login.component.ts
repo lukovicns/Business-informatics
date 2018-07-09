@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeIn } from '../../../animations';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',

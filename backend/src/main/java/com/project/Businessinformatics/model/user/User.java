@@ -1,36 +1,44 @@
 package com.project.Businessinformatics.model.user;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User implements Serializable {
+@Table(name = "user")
+public class User {
 
-	private static final long serialVersionUID = -4183179901882702679L;
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@SequenceGenerator(name = "USER_ID_GEN", allocationSize = 10)
-	@GeneratedValue(generator = "USER_ID_GEN")
+	@Column(name="user_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 
-	@Column
+	@Column(name="name", columnDefinition="VARCHAR(50)", nullable=false)
 	private String name;
 
-	@Column
+	@Column(name="surname", columnDefinition="VARCHAR(50)", nullable=false)
 	private String surname;
 
-	@Column(unique = true)
+	@Column(name="email", columnDefinition="VARCHAR(100)", nullable=false, unique = true)
 	private String email;
 
-	@Column
+	@Column(name="password", columnDefinition="VARCHAR(100)", nullable=false)
 	private String password;
+	
+	public User() {
+		
+	}
+
+	public User(String name, String surname, String email, String password) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+	}
 
 	public Long getId() {
 		return id;
@@ -71,7 +79,4 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-
 }

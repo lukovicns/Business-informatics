@@ -1,6 +1,6 @@
 package com.project.Businessinformatics.service.impl;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CityServiceImpl implements CityService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<City> getCities() {
+	public List<City> getCities() {
 		return cityRepository.findAll();
 	}
 	

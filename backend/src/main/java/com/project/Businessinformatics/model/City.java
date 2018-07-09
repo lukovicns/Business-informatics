@@ -1,6 +1,5 @@
 package com.project.Businessinformatics.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,35 +8,34 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.Size;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class City implements Serializable{
+@Table(name = "city")
+public class City {
 
-	private static final long serialVersionUID = 1L;
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@SequenceGenerator(name = "CITY_ID_GEN", allocationSize = 10)
-	@GeneratedValue(generator = "CITY_ID_GEN")
+	@Column(name="city_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 	
-	@Column
-	@Size(max = 60)
+	@OneToOne
+	@JoinColumn(name="country_id")
+	private Country country;
+	
+	@Column(name="name", columnDefinition="VARCHAR(50)", nullable=false)
 	private String name;
 	
-	@Column(unique = true)
-	@Size(max = 12)
+	@Column(name="ptt_number", columnDefinition="VARCHAR(50)", nullable=false, unique = true)
 	private String pttNumber;
-	
-	@ManyToOne
-	private Country country;
 	
 	@OneToMany(mappedBy = "placeOfAcceptance", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<AnalyticalStatement> analyticalStatements = new HashSet<>();
@@ -46,10 +44,21 @@ public class City implements Serializable{
 	public Set<AnalyticalStatement> getAnalyticalStatements(){
 		return analyticalStatements;
 	}
-	
+
 	@JsonProperty
 	public void setAnalyticalStatements(Set<AnalyticalStatement> analyticalStatements){
 		this.analyticalStatements = analyticalStatements;
+	}
+	
+	public City() {
+		
+	}
+
+	public City(String name, String pttNumber, Country country) {
+		super();
+		this.name = name;
+		this.pttNumber = pttNumber;
+		this.country = country;
 	}
 
 	public Long getId() {

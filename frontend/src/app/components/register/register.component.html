@@ -7,6 +7,9 @@
     </ol>
   </nav>
   <div class="container">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
     <div class="card">
       <div class="card-header">
         <h1>Register here</h1>
@@ -26,16 +29,10 @@
             <input formControlName="surname" type="text" class="form-control" id="surname" placeholder="Enter your last name">
           </div>
           <div class="form-group">
-            <label for="phone">Phone number</label>
-            <input formControlName="phone" type="text" class="form-control" id="phone" placeholder="Enter your phone number">
-          </div>
-          <div class="form-group">
-            <label for="street">Street</label>
-            <input formControlName="street" type="text" class="form-control" id="street" placeholder="Enter your street">
-          </div>
-          <div class="form-group">
             <label for="city">City</label>
-            <input formControlName="city" type="text" class="form-control" id="city" placeholder="Enter your city">
+            <select id="city" class="form-control">
+              <option value="{{ city.id }}" *ngFor="let city of cities">{{ city.name }}</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="password1">Password</label>

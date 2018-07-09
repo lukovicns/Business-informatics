@@ -11,8 +11,8 @@ import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { UserService } from './services/user/user.service';
 import { AuthGuard } from './guards/auth.guard';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
