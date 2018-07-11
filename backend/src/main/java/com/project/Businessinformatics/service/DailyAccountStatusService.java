@@ -11,5 +11,8 @@ public interface DailyAccountStatusService {
 	Collection<DailyAccountStatus> getDailyAccountStatuses();
 	DailyAccountStatus getDailyAccountStatus(Long id);
 	void deleteDailyAccountStatus(Long id);
+	DailyAccountStatus updateDailyAccountStatus(Long accountId, DailyAccountStatus dailyAccountStatus, Date date);
+	Collection<DailyAccountStatus> searchDailyAccountStatuses(Long accountId, DailyAccountStatus dailyAccountStatus, Date date);
+	
 	
 }

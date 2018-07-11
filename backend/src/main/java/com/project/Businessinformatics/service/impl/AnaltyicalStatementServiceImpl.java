@@ -1,5 +1,6 @@
 package com.project.Businessinformatics.service.impl;
 
+
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.project.Businessinformatics.service.AnaltyicalStatementService;
 @Transactional
 public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementService {
 	
+
 	@Autowired
 	private AnalyticalStatementRepository analyticalStatementRepository;
 
@@ -28,5 +30,8 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 	public AnalyticalStatement getAnalyticalStatement(Long id) {
 		return analyticalStatementRepository.getOne(id);
 	}
+	
+	
+
 
 }

@@ -9,5 +9,5 @@ public interface AnaltyicalStatementService {
 
 	Collection<AnalyticalStatement> getAnalyticalStatements();
 	AnalyticalStatement getAnalyticalStatement(Long id);
-	
+
 }
