@@ -1,7 +1,6 @@
 package com.project.Businessinformatics.model.xml;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -64,11 +63,11 @@ public class ClearingSettlementRequest implements Serializable{
 	
 	@XmlElement(name="currencyDate", required=true)
 	@Column(nullable = false)
-	private Date currencyDate;
+	private String currencyDate;
 	
 	@XmlElement(name="date", required=true)
 	@Column(nullable = false)
-	private Date date;
+	private String date;
 	
 	@XmlElement(name="analyticalStatements", required=true)
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "clearingSettlementRequest", targetEntity=AnalyticalStatement.class)
@@ -119,19 +118,19 @@ public class ClearingSettlementRequest implements Serializable{
 		this.currency = currency;
 	}
 
-	public Date getCurrencyDate() {
+	public String getCurrencyDate() {
 		return currencyDate;
 	}
 
-	public void setCurrencyDate(Date currencyDate) {
+	public void setCurrencyDate(String currencyDate) {
 		this.currencyDate = currencyDate;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -139,6 +138,4 @@ public class ClearingSettlementRequest implements Serializable{
 		this.analyticalStatements = analyticalStatements;
 	}
 
-
-	
 }

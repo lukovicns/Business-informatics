@@ -3,15 +3,18 @@ package com.project.Businessinformatics.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Digits;
 
 @Entity
 public class CurrencyExchange {
 	
-	@GeneratedValue
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "currency_exchange_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 	
 	@Column(nullable = false)
@@ -26,13 +29,16 @@ public class CurrencyExchange {
 	@Digits(fraction = 4, integer = 13)
 	private Double sellRate;
 	
-	@ManyToOne(optional = false)
+	@OneToOne
+	@JoinColumn(name="exchange_list_id")
 	private ExchangeList exchangeList;
 	
-	@ManyToOne(optional = false)
+	@OneToOne
+	@JoinColumn(name="primary_currency_id")
 	private Currency primaryCurrency;
 
-	@ManyToOne(optional = false)
+	@OneToOne
+	@JoinColumn(name="according_to_currency_id")
 	private Currency accordingToCurrency;
 
 	public CurrencyExchange() {

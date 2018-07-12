@@ -6,11 +6,12 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 
 import com.project.Businessinformatics.model.AnalyticalStatement;
 
 import net.sf.jasperreports.engine.JRException;
-
 
 public interface AnaltyicalStatementService {
 
@@ -19,31 +20,14 @@ public interface AnaltyicalStatementService {
 	
 	Collection<AnalyticalStatement> createAnalyticalStatement(String currencyId, 
 			  String cityId,
-			  Date dateOfReceipt,
-			  Date currencyDate,
-			  AnalyticalStatement analyticalStatement);
+			  String dateOfReceipt,
+			  String currencyDate,
+			  AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException;
 	
-	Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement);
-	
-	Collection<AnalyticalStatement> updateAnalyticalStatement(String currencyId,
-			  String cityId,
-			  Date dateOfReceipt,
-			  Date currencyDate,
-			  AnalyticalStatement analyticalStatement);
+	Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement) throws JAXBException, DatatypeConfigurationException;
 
-	Collection<AnalyticalStatement> deleteAnalyticalStatement(Long id);
-
-	Collection<AnalyticalStatement> getAnalyticalStatementsByDailyAccountStatusId(Long id);
+	void exportToPdf(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws  SQLException, IOException, JRException;
 	
-	Collection<AnalyticalStatement> searchAnalyticalStatements(Long currencyId,
-			   Long cityId, 
-			   Long dailyAccountStatusId,
-			   Date dateOfReceipt,
-			   Date currencyDate,
-			   AnalyticalStatement analyticalStatement);
-	
-	void exportToPdf(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws JRException, SQLException, IOException;
-	
-	void exportToXml(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws JRException, SQLException, IOException;
+	void exportToXml(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws  SQLException, IOException, JRException;
 	
 }

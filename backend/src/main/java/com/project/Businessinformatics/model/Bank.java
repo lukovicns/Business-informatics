@@ -8,9 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.Businessinformatics.model.xml.ClearingSettlementRequest;
 import com.project.Businessinformatics.model.xml.RTGSRequest;
-import com.project.Businessinformatics.model.xml.RTGSResponse;
 
 @Entity
 @Table(name = "BANK")
@@ -33,8 +34,8 @@ public class Bank implements Serializable {
 	private static final long serialVersionUID = -5790070241207558112L;
 
 	@Id
-	@Column(name = "BANK_ID")
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "bank_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 
 	// lista kursnih lista...
@@ -44,10 +45,9 @@ public class Bank implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bank", orphanRemoval = true, targetEntity = Account.class)
 	private Set<Account> accounts;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = RTGSResponse.class, mappedBy = "bank")
-	private Set<RTGSResponse> rTGSResponses;
-	
-	@ManyToOne
+//	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="country_id")
 	private Country country;
 
 	@Column(name = "BANK_PIB", nullable = false, length = 10)
@@ -126,11 +126,6 @@ public class Bank implements Serializable {
 	@JsonIgnore
 	public Set<RTGSRequest> getRtgsRequestsRecieverBank() {
 		return rtgsRequestsRecieverBank;
-	}
-
-	@JsonIgnore
-	public Set<RTGSResponse> getrTGSResponses() {
-		return rTGSResponses;
 	}
 
 	@JsonIgnore
@@ -229,10 +224,6 @@ public class Bank implements Serializable {
 
 	public void setTransactionAccount(String transactionAccount) {
 		this.transactionAccount = transactionAccount;
-	}
-
-	public void setrTGSResponses(Set<RTGSResponse> rTGSResponses) {
-		this.rTGSResponses = rTGSResponses;
 	}
 
 	public void setSwift(String swift) {

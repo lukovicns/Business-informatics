@@ -25,4 +25,9 @@ public class ClearingSettlementRequestServiceImpl implements ClearingSettlementR
 		return (ArrayList<ClearingSettlementRequest>) clearingSettlementRequestRepository.findAll();
 	}
 
+	@Override
+	public ClearingSettlementRequest search(Long paymentBankId, Long recipientBankId) {
+		return clearingSettlementRequestRepository.search(paymentBankId, recipientBankId);
+	}
+
 }

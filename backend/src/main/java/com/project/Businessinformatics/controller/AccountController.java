@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Businessinformatics.model.Account;
-import com.project.Businessinformatics.model.user.Permission;
 import com.project.Businessinformatics.service.impl.AccountServiceImpl;
 import com.project.Businessinformatics.service.impl.RevokedAccountServiceImpl;
 
@@ -35,7 +34,6 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "readAccounts")
 	public ResponseEntity<ArrayList<Account>> getAllAccounts() {
 		ArrayList<Account> accounts = accountServiceImpl.getAllAccounts();
 		if (accounts != null) {
@@ -47,7 +45,6 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "writeAccount")
 	public ResponseEntity<Account> createAccount(@RequestBody @Valid Account a) {
 		Account account = accountServiceImpl.createAccount(a);
 		if (account != null) {
@@ -59,7 +56,6 @@ public class AccountController {
 
 	@RequestMapping(value = "/{bankId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "editAccounnt")
 	public ResponseEntity<Account> updateAccount(@RequestBody @Valid Account a) {
 		Account account = accountServiceImpl.updateAccount(a);
 		if (account != null) {
@@ -71,7 +67,6 @@ public class AccountController {
 
 	@RequestMapping(value = "delete/{accountId}/{transverAcc}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "deleteAccount")
 	public ResponseEntity<Account> deleteAccount(@PathVariable("accountId") Long accountId,
 			@PathVariable("transverAcc") String transverAcc) {
 		Account account = accountServiceImpl.deleteAccount(accountId);
@@ -94,7 +89,6 @@ public class AccountController {
 
 	@RequestMapping(value = "/{bankId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "readBankAccounts")
 	public ResponseEntity<ArrayList<Account>> getAllAccountsForBank(@PathVariable("bankId") Long bankId) {
 		ArrayList<Account> bankAccounts = accountServiceImpl.getAllAccountsForBank(bankId);
 		if (bankAccounts != null) {
@@ -104,9 +98,9 @@ public class AccountController {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/search/{active}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	@Permission(permissionName = "searchAccounts")
 	public ResponseEntity<Collection<Account>> getAllAccountsForBank(@RequestBody Account account, @PathVariable("active") String active) {
 		
 		Calendar cal = Calendar.getInstance();
@@ -115,13 +109,13 @@ public class AccountController {
 		cal.set(2100, 12, 31);
 		Date openingMax = cal.getTime();
 		if(account.getOpeningDate() != null){
-			cal.setTime(account.getOpeningDate());
+			cal.setTime(new Date(account.getOpeningDate()));
 			cal.set(Calendar.HOUR, 0);
 			cal.set(Calendar.MINUTE, 0);
 			cal.set(Calendar.SECOND, 0);
 			cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
 			openingMin = cal.getTime();
-			cal.setTime(account.getOpeningDate());
+			cal.setTime(new Date(account.getOpeningDate()));
 			cal.set(Calendar.HOUR, 23);
 			cal.set(Calendar.MINUTE, 59);
 			cal.set(Calendar.SECOND, 59);

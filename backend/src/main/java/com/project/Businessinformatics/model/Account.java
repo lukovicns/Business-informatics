@@ -1,8 +1,6 @@
 package com.project.Businessinformatics.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,8 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -43,37 +42,27 @@ public class Account implements Serializable {
 	@Column(name = "ACCOUNT_NUM")
 	private String accountNumber;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name = "ACCOUNT_DATE")
-	private Date openingDate;
+	private String openingDate;
 
 	@Column(name = "ACCOUNT_ACTIVE")
 	private boolean active;
 
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="bank_id")
 	private Bank bank;
 
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="client_id")
 	private Client client;
 
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="currency_id")
 	private Currency currency;
-
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<DailyAccountStatus> dailyAccountStatuses = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account", orphanRemoval = true)
 	private Set<RevokedAccount> revokedAccounts;
-
-	@JsonIgnore
-	public Set<DailyAccountStatus> getDailyAccountStatuses() {
-		return dailyAccountStatuses;
-	}
-
-	@JsonProperty
-	public void setDailyAccountStatuses(Set<DailyAccountStatus> dailyAccountStatuses) {
-		this.dailyAccountStatuses = dailyAccountStatuses;
-	}
 
 	@JsonIgnore
 	public Set<RevokedAccount> getRevokedAccounts() {
@@ -101,11 +90,11 @@ public class Account implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public Date getOpeningDate() {
+	public String getOpeningDate() {
 		return openingDate;
 	}
 
-	public void setOpeningDate(Date openingDate) {
+	public void setOpeningDate(String openingDate) {
 		this.openingDate = openingDate;
 	}
 

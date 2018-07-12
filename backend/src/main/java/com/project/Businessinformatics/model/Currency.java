@@ -8,9 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,8 +31,9 @@ import com.project.Businessinformatics.model.xml.ClearingSettlementRequest;
 )
 public class Currency {
 	
-	@GeneratedValue
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "currency_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 
 	@XmlElement(name="officialCode", required=true)
@@ -45,7 +48,8 @@ public class Currency {
 	@Column(nullable = false)
 	private boolean domicilna;
 	
-	@ManyToOne(optional = false)
+	@OneToOne
+	@JoinColumn(name="country_id")
 	private Country country;
 	
 	@OneToMany(mappedBy = "currency", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,8 +66,6 @@ public class Currency {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = ClearingSettlementRequest.class, mappedBy="currency")
 	private Set<ClearingSettlementRequest> clearingSettlementRequests;
-	
-	
 	
 	public Country getCountry() {
 		return country;

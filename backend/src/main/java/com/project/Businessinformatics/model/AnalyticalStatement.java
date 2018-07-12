@@ -1,6 +1,5 @@
 package com.project.Businessinformatics.model;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,16 +9,19 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -45,15 +47,15 @@ import com.project.Businessinformatics.model.xml.RTGSRequest;
 	"amount",
 	"currency",
 	"urgently",
-	"uplata"
+	"payment"
 })
-
+@XmlRootElement(name = "analytical_statement")
 public class AnalyticalStatement {
 
 	@XmlElement(name="id", required=true)
 	@Id
-	@SequenceGenerator(name = "ANALYTICAL_STATEMENT_ID_GEN")
-	@GeneratedValue(generator = "ANALYTICAL_STATEMENT_ID_GEN")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "analytical_statement_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 	
 	@XmlElement(name="originator", required=true)
@@ -72,16 +74,16 @@ public class AnalyticalStatement {
 	private String recipient;
 	
 	@XmlElement(name="dateOfReceipt", required=true)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	@Column
 	@NotNull
-	private Date dateOfReceipt;
+	private String dateOfReceipt;
 	
 	@XmlElement(name="currencyDate", required=true)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	@Column
 	@NotNull
-	private Date currencyDate;
+	private String currencyDate;
 	
 	@XmlElement(name="originatorAccount", required=true)
 	@Column
@@ -127,18 +129,18 @@ public class AnalyticalStatement {
 	@Enumerated(EnumType.STRING)
 	private AnalyticalErrors errorType;
 	
-	@ManyToOne
-	private DailyAccountStatus dailyAccountStatus;
 	
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="place_of_acceptance_id")
 	private City placeOfAcceptance;
 	
 	@XmlElement(name="currency", required=true)
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="currency_id")
 	private Currency currency;
 	
-	@XmlElement(name="uplata", required=false)
-	private boolean uplata;
+	@XmlElement(name="payment", required=false)
+	private boolean payment;
 	
 	@Enumerated(EnumType.STRING)
 	private AnalyticalStatementMode analyticalStatementMode;
@@ -186,19 +188,21 @@ public class AnalyticalStatement {
 		this.recipient = recipient;
 	}
 
-	public Date getDateOfReceipt() {
+	
+	
+	public String getDateOfReceipt() {
 		return dateOfReceipt;
 	}
 
-	public void setDateOfReceipt(Date dateOfReceipt) {
+	public void setDateOfReceipt(String dateOfReceipt) {
 		this.dateOfReceipt = dateOfReceipt;
 	}
 
-	public Date getCurrencyDate() {
+	public String getCurrencyDate() {
 		return currencyDate;
 	}
 
-	public void setCurrencyDate(Date currencyDate) {
+	public void setCurrencyDate(String currencyDate) {
 		this.currencyDate = currencyDate;
 	}
 
@@ -274,14 +278,6 @@ public class AnalyticalStatement {
 		this.errorType = errorType;
 	}
 
-	public DailyAccountStatus getDailyAccountStatus() {
-		return dailyAccountStatus;
-	}
-
-	public void setDailyAccountStatus(DailyAccountStatus dailyAccountStatus) {
-		this.dailyAccountStatus = dailyAccountStatus;
-	}
-
 	public City getPlaceOfAcceptance() {
 		return placeOfAcceptance;
 	}
@@ -298,12 +294,12 @@ public class AnalyticalStatement {
 		this.currency = currency;
 	}
 
-	public boolean isUplata() {
-		return uplata;
+	public boolean isPayment() {
+		return payment;
 	}
 
-	public void setUplata(boolean uplata) {
-		this.uplata = uplata;
+	public void setPayment(boolean payment) {
+		this.payment = payment;
 	}
 
 	public AnalyticalStatementMode getAnalyticalStatementMode() {
@@ -325,7 +321,5 @@ public class AnalyticalStatement {
 	public void setRtgsRequests(Set<RTGSRequest> rtgsRequests) {
 		this.rtgsRequests = rtgsRequests;
 	}
-	
-	
 	
 }

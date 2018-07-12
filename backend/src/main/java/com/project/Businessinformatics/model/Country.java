@@ -19,9 +19,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class Country {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name="country_id", updatable = false, nullable = false, insertable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "country_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 
 	@Column(name="name", columnDefinition="VARCHAR(50)", nullable=false)

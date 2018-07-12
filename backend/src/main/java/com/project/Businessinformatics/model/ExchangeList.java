@@ -1,6 +1,5 @@
 package com.project.Businessinformatics.model;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,19 +20,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class ExchangeList {
 
-	@GeneratedValue
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "exchange_list_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 	
 	@Column(nullable = false)
-	private Date date;
+	private String date;
 	
 	@Column(nullable = false)
 	@Digits(integer=3, fraction = 0)
 	private int numberOfExchangeList;
 	
 	@Column(nullable = false)
-	private Date usedSince;
+	private String usedSince;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity=CurrencyExchange.class, mappedBy = "exchangeList")
 	private Set<CurrencyExchange> currencyExchanges;
@@ -41,7 +42,7 @@ public class ExchangeList {
 		this.id = id;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -49,7 +50,7 @@ public class ExchangeList {
 		this.numberOfExchangeList = numberOfExchangeList;
 	}
 
-	public void setUsedSince(Date usedSince) {
+	public void setUsedSince(String usedSince) {
 		this.usedSince = usedSince;
 	}
 
@@ -73,7 +74,7 @@ public class ExchangeList {
 		return id;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
@@ -81,7 +82,7 @@ public class ExchangeList {
 		return numberOfExchangeList;
 	}
 
-	public Date getUsedSince() {
+	public String getUsedSince() {
 		return usedSince;
 	}
 
