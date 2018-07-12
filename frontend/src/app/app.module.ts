@@ -12,7 +12,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
-import { UserService } from './services/user.service';
+import { AccountsComponent } from './components/accounts/accounts.component';
+import { AnalyticalStatementsComponent } from './components/analytical-statements/analytical-statements.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { UserService } from './services/user.service';
     HomeComponent,
     PageNotFoundComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AccountsComponent,
+    AnalyticalStatementsComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,6 @@ import { UserService } from './services/user.service';
     ReactiveFormsModule
   ],
   providers: [
-    UserService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ package com.project.Businessinformatics.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -28,6 +29,7 @@ public interface AnaltyicalStatementService {
 
 	void exportToPdf(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws  SQLException, IOException, JRException;
 	
-	void exportToXml(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws  SQLException, IOException, JRException;
+	void exportToXml(Long accountId,Date start,Date end,HttpServletResponse response) throws  SQLException, IOException, JRException, ParseException;
 	
+	void delete(Long id);
 }

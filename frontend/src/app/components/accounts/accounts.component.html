@@ -1,0 +1,126 @@
+<app-navbar></app-navbar>
+<div [@fadeIn]>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Accounts</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Add account</h3>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="accountForm" (ngSubmit)="addAccount()">
+              <div class="form-group">
+                <label for="accountNumber">Account number</label>
+                <input type="text" class="form-control" id="accountNumber" placeholder="Enter account number" formControlName="accountNumber">
+              </div>
+              <div class="form-group">
+                <label for="openingDate">Opening date</label>
+                <input type="date" class="form-control" id="openingDate" placeholder="Enter opening date" formControlName="openingDate">
+              </div>
+              <div class="form-group">
+                <label for="active">Active</label>&nbsp;
+                <input type="checkbox" id="active">
+              </div>
+              <div class="form-group">
+                <label for="bank">Bank</label>
+                <select id="bank" class="form-control" formControlName="bank">
+                  <option value="{{ bank.id }}" *ngFor="let bank of banks">{{ bank.name }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="client">Client</label>
+                <select id="client" class="form-control" formControlName="client">
+                  <option value="{{ client.id }}" *ngFor="let client of clients">{{ client.email }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="currency">Currency</label>
+                <select id="currency" class="form-control" formControlName="currency">
+                  <option value="{{ currency.id }}" *ngFor="let currency of currencies">{{ currency.officialCode }}</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-info" [disabled]="!accountForm.valid">Add account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="table-responsive">
+          <table class="table table-bordered" *ngIf="accounts && accounts.length > 0; else accountsNotFound">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Account number</th>
+                <th scope="col">Opening date</th>
+                <th scope="col">Active</th>
+                <th scope="col">Bank</th>
+                <th scope="col">Client</th>
+                <th scope="col">Currency</th>
+                <th scope="col">Export</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let account of accounts">
+                <td>{{ account.id }}</td>
+                <td>{{ account.accountNumber }}</td>
+                <td>{{ account.openingDate }}</td>
+                <td>
+                  <span *ngIf="account.active">Yes</span>
+                  <span *ngIf="!account.active">No</span>
+                </td>
+                <td>{{ account.bank?.name }}</td>
+                <td>{{ account.client?.name }}</td>
+                <td>{{ account.currency?.officialCode }}</td>
+                <td>
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exportModal">
+                    Export to XML
+                  </button>
+                  <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportLabel" aria-hidden="true" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exportLabel">Export to XML</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form [formGroup]="exportForm" (ngSubmit)="exportToXML(account.id)">
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label for="startDate">Start date</label>
+                              <input type="date" class="form-control" id="startDate" placeholder="Enter start date" formControlName="startDate">
+                            </div>
+                            <div class="form-group">
+                              <label for="endDate">End date</label>
+                              <input type="date" class="form-control" id="endDate" placeholder="Enter end date" formControlName="endDate">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="!exportForm.valid">Export</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ng-template #accountsNotFound>
+        <h1>There are no accounts yet!</h1>
+      </ng-template>
+    </div>
+  </div>
+</div>

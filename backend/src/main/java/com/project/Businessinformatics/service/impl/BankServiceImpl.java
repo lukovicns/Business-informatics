@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,6 +140,10 @@ public class BankServiceImpl implements BankService {
 	public void exportToPdf(Long bankId, HttpServletResponse response) throws IOException, SQLException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Bank getBank(Long id) {
+		return bankRepository.getOne(id);
 	}
 
 }

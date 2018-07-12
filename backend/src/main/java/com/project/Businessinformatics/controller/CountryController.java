@@ -14,7 +14,7 @@ import com.project.Businessinformatics.model.Country;
 import com.project.Businessinformatics.service.CountryService;
 
 @RestController
-@RequestMapping(value="/api/countries")
+@RequestMapping(value="api/countries")
 public class CountryController {
 
 	@Autowired

@@ -92,7 +92,7 @@ public class ClientController {
 		}
 		
 		try {
-			SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			dateFormatter.setLenient(false);
 			Date dateOfBirth = dateFormatter.parse(data.getDateOfBirth());
 			
@@ -100,7 +100,7 @@ public class ClientController {
 			return new ResponseEntity<>(service.save(client), HttpStatus.OK);
 			
 		} catch (Exception e) {
-			return new ResponseEntity<>("You must provide a valid date (format: dd/MM/yyyy).", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>("You must provide a valid date (format: yyyy-MM-dd).", HttpStatus.FORBIDDEN);
 		}
 	}
 }

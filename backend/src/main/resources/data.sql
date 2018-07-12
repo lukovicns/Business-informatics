@@ -39,6 +39,11 @@ insert into city(city_id, name, ptt_number, country_id) values(2, 'Novi sad', '2
 insert into city(city_id, name, ptt_number, country_id) values(3, 'Moskva', '31000', 2);
 insert into city(city_id, name, ptt_number, country_id) values(4, 'Rim', '41000', 3);
 
+insert into user (user_id, name, surname, email, password) values (1, 'Pera', 'Peric', 'p@p.com', 'passpass');
+insert into client (client_id, name, surname, email, password, address, date_of_birth) values (1, 'Marko', 'Markovic', 'm@m.com', 'passpass', 'Bulevar Oslovodjenja 44', '18/07/1991');
+insert into client (client_id, name, surname, email, password, address, date_of_birth) values (2, 'Jovan', 'Jovanovic', 'j@j.com', 'passpass', 'Bulevar Oslovodjenja 43', '04/02/1992');
+insert into client (client_id, name, surname, email, password, address, date_of_birth) values (3, 'Goran', 'Goranovic', 'g@g.com', 'passpass', 'Bulevar Oslovodjenja 42', '06/12/1985');
+
 insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(1,'333-111-333','2017-05-05',true,1,1, 1);
 insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(2,'222-111-444','2017-05-06',true,3,2, 2);
 insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(3,'666-111-333','2017-06-03',true,2,3, 3);
@@ -65,5 +70,3 @@ insert into analytical_statement(amount, approval_authorization_number, approval
 	   		  'Stefan Popic, Doze Djerdja, Novi Sad', '666-111-333', 'Uplata za overu semestra', 'Fakultet tehnickih nauka, Trg Dositeja Obradovica 1, Novi Sad',
 	   		  '840-714121843-73', false, false, 3, 1);
 
-insert into user (user_id, name, surname, email, password) values (1, 'Pera', 'Peric', 'p@p.com', 'passpass');
-insert into client (client_id, name, surname, email, password, address, date_of_birth) values (1, 'Marko', 'Markovic', 'm@m.com', 'passpass', 'Bulevar Oslovodjenja 44', '18/07/1991');

@@ -9,6 +9,16 @@
           <i class="fas fa-home"></i>&nbsp;Home
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/accounts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-address-card"></i>&nbsp;Accounts
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/analytical-statements" routerLinkActive="active" *ngIf="!userIsLoggedIn()">
+          <i class="fas fa-chart-line"></i>&nbsp;&nbsp;Analytical Statements
+        </a>
+      </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">

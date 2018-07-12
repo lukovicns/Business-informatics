@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+<div [@fadeIn]>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Analytical Statements</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h3>Add analytical statement</h3>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="analyticalStatementForm" (ngSubmit)="addAnalyticalStatement()">
+              <div class="form-group">
+                <label for="currency">Currency</label>
+                <select id="currency" class="form-control" formControlName="currency">
+                  <option value="{{ currency.id }}" *ngFor="let currency of currencies">{{ currency.officialCode }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <select id="city" class="form-control" formControlName="city">
+                  <option value="{{ city.id }}" *ngFor="let city of cities">{{ city.name }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="dateOfReceipt">Date of receipt</label>
+                <input type="date" class="form-control" id="dateOfReceipt" formControlName="dateOfReceipt">
+              </div>
+              <div class="form-group">
+                <label for="currencyDate">Currency date</label>
+                <input type="date" class="form-control" id="currencyDate" formControlName="currencyDate">
+              </div>
+              <button type="submit" class="btn btn-info" [disabled]="!analyticalStatementForm.valid">Add analytical statement</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="table-responsive">
+          <table class="table table-bordered" *ngIf="analyticalStatements && analyticalStatements.length > 0; else analyticalStatementNotFound">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Originator</th>
+                <th scope="col">Purpose</th>
+                <th scope="col">Recipient</th>
+                <th scope="col">Date of receipt</th>
+                <th scope="col">Currency date</th>
+                <th scope="col">Originator account</th>
+                <th scope="col">Model</th>
+                <th scope="col">Debit authorization number</th>
+                <th scope="col">Recipient account</th>
+                <th scope="col">Approval model</th>
+                <th scope="col">Approval authorization number</th>
+                <th scope="col">Urgently</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let analyticalStatement of analyticalStatements">
+                <td>{{ analyticalStatement.id }}</td>
+                <td>{{ analyticalStatement.originator }}</td>
+                <td>{{ analyticalStatement.purpose }}</td>
+                <td>{{ analyticalStatement.recipient }}</td>
+                <td>{{ analyticalStatement.dateOfReceipt }}</td>
+                <td>{{ analyticalStatement.currencyDate }}</td>
+                <td>{{ analyticalStatement.originatorAccount }}</td>
+                <td>{{ analyticalStatement.model }}</td>
+                <td>{{ analyticalStatement.debitAuthorizationNumber }}</td>
+                <td>{{ analyticalStatement.recipientAccount }}</td>
+                <td>{{ analyticalStatement.approvalModel }}</td>
+                <td>{{ analyticalStatement.approvalAuthorizationNumber }}</td>
+                <td>{{ analyticalStatement.urgently }}</td>
+                <td>{{ analyticalStatement.amount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ng-template #analyticalStatementNotFound>
+        <h1>There are no analytical statements yet!</h1>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -23,7 +23,7 @@ import com.project.Businessinformatics.service.impl.AccountServiceImpl;
 import com.project.Businessinformatics.service.impl.RevokedAccountServiceImpl;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("api/accounts")
 public class AccountController {
 
 	@Autowired

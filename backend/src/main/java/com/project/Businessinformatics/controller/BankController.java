@@ -26,7 +26,7 @@ import com.project.Businessinformatics.service.impl.BankServiceImpl;
 import net.sf.jasperreports.engine.JRException;
 
 @RestController
-@RequestMapping("/banks")
+@RequestMapping("api/banks")
 public class BankController {
 	
 	@Autowired
@@ -41,6 +41,14 @@ public class BankController {
 		} else {
 			return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
+	}
+	
+	public ResponseEntity<Object> getBank(@PathVariable Long id) {
+		Bank bank = bankServiceImpl.getBank(id);
+		if (bank == null) {
+			return new ResponseEntity<>("Bank not found.", HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(bank, HttpStatus.OK);
 	}
 	
 	@RequestMapping (value="/{countryId}",

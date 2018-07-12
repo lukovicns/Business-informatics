@@ -14,7 +14,7 @@ import com.project.Businessinformatics.model.City;
 import com.project.Businessinformatics.service.CityService;
 
 @RestController
-@RequestMapping(value="/api/cities")
+@RequestMapping(value="api/cities")
 public class CityController {
 
 	@Autowired

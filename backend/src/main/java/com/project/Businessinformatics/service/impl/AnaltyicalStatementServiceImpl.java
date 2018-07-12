@@ -8,20 +8,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,7 @@ import com.project.Businessinformatics.service.AnaltyicalStatementService;
 import com.project.Businessinformatics.service.CityService;
 import com.project.Businessinformatics.service.CurrencyService;
 import com.project.Businessinformatics.service.InterBankService;
+import com.project.Businessinformatics.util.XmlPaths;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -109,7 +112,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			} else {
 				analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
 				
-				File file = new File("G:\\analyticalStatement" + analyticalStatement.getId() + ".xml");
+				File file = new File(XmlPaths.getXmlPath() + "analyticalStatement" + analyticalStatement.getId() + ".xml");
 				JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
 				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -125,7 +128,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			
 			analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
 			
-			File file = new File("G:\\analyticalStatement" + analyticalStatement.getId() + ".xml");
+			File file = new File(XmlPaths.getXmlPath() + "analyticalStatement" + analyticalStatement.getId() + ".xml");
 			JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -192,7 +195,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 	
 	@Override
 	public void exportToXml(Long accountId, Date startDate, Date endDate, HttpServletResponse response)
-			throws JRException, SQLException, IOException {
+			throws JRException, SQLException, IOException, ParseException {
 		JAXBContext context;
 		try {
 			Calendar cal = Calendar.getInstance();
@@ -218,7 +221,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 
 			Account account =  accountService.getAccount(accountId);
 			
-			List<AnalyticalStatement> statements = analyticalStatementRepository.findClientStatements(account.getAccountNumber(), startDate, endDate);
+			List<AnalyticalStatement> statements = findClientStatements(account.getAccountNumber(), startDate, endDate);
 			
 			ClientStatement clientStatement = new ClientStatement();
 			clientStatement.setAccount(account);
@@ -230,7 +233,6 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			
 			String name = "Client Statement - " + now.toString() + " - " + account.getAccountNumber() + ".xml";
 			name = name.replace(":", "-");
-			
 			try {
 				os = new FileOutputStream(name);
 				marshaller.marshal(clientStatement, os);
@@ -253,6 +255,23 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<AnalyticalStatement> findClientStatements(String accountNumber, Date startDate, Date endDate) throws ParseException {
+		List<AnalyticalStatement> clientStatements = new ArrayList<AnalyticalStatement>();
+		for (AnalyticalStatement as : getAnalyticalStatements()) {
+			Date dateOfReceipt = new SimpleDateFormat("yyyy-MM-dd").parse(as.getDateOfReceipt());
+			System.out.println(dateOfReceipt);
+			if (as.getOriginatorAccount().equals(accountNumber) && dateOfReceipt.compareTo(startDate) >= 0 && dateOfReceipt.compareTo(endDate) <= 0) {
+				clientStatements.add(as);
+			}
+		}
+		return clientStatements;
+	}
+
+	@Override
+	public void delete(Long id) {
+		analyticalStatementRepository.deleteById(id);
 	}
 
 }
