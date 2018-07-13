@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.project.Businessinformatics.model.Bank;
 
+import net.sf.jasperreports.engine.JRException;
+
 public interface BankService {
 	
 	public ArrayList<Bank> getAllBanks();
@@ -16,6 +18,6 @@ public interface BankService {
 	public Bank deleteBank(Long id);
 	public ArrayList<Bank> searchBanks(Bank b, Long countryId);
 	public Bank findBankByLeadNumber(String substring);
-	public void exportToPdf(Long bankId,HttpServletResponse response) throws IOException, SQLException;
+	public void exportToPdf(Long bankId,HttpServletResponse response) throws IOException, SQLException, JRException;
 	
 }

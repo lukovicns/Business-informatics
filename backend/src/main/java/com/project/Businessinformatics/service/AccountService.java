@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import com.project.Businessinformatics.model.Account;
 
 public interface AccountService {
@@ -18,5 +21,6 @@ public interface AccountService {
 	public Collection<Account> searchWithActive(String accountNumber, Date openingMin, Date openingMax, String bankName, String name, String surname, String currency, boolean active);
 	
 	Account getAccountByAccountNumber(String accountNumber);
+	void transferAccount(Account account, String accountNumber) throws JAXBException, DatatypeConfigurationException;
 
 }

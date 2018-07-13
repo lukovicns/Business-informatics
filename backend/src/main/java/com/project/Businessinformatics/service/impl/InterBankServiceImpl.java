@@ -32,6 +32,7 @@ import com.project.Businessinformatics.service.ClearingSettlementRequestService;
 import com.project.Businessinformatics.service.InterBankService;
 import com.project.Businessinformatics.service.Mt102Service;
 import com.project.Businessinformatics.service.Mt103Service;
+import com.project.Businessinformatics.util.XmlPaths;
 
 @Service
 public class InterBankServiceImpl implements InterBankService {
@@ -73,7 +74,7 @@ public class InterBankServiceImpl implements InterBankService {
 			
 			Mt103Request mt103Request = mapAnalyticalStatementToMt103Request(as, paymentBank, receiverBank);
 			
-			File file = new File("G:\\rtgs" + mt103Request.getId() + ".xml");
+			File file = new File(XmlPaths.getXmlPath()+"rtgs" + mt103Request.getId() + ".xml");
 			JAXBContext jaxbContext = JAXBContext.newInstance(Mt103Request.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -146,8 +147,8 @@ public class InterBankServiceImpl implements InterBankService {
 		}
 	}
 	
-	@Scheduled(cron = "0 30 10,12 ? * *")
-//	@Scheduled(fixedRate = 15000)
+	//@Scheduled(cron = "0 30 10,12 ? * *")
+	@Scheduled(fixedRate = 15000)
 	@Override
 	public void generateClearingService() throws JAXBException {
 		
@@ -155,7 +156,7 @@ public class InterBankServiceImpl implements InterBankService {
 			
 			for(Map.Entry<String, Mt102Request> pair : clearingSettlementRequests.entrySet()){
 				System.out.println("statements "+pair.getValue().getStatementItems().size());
-				File file = new File("G:\\kliring" + pair.getValue().getId() + ".xml");
+				File file = new File(XmlPaths.getXmlPath()+"kliring" + pair.getValue().getId() + ".xml");
 				JAXBContext jaxbContext = JAXBContext.newInstance(Mt102Request.class);
 				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 

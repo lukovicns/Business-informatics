@@ -179,6 +179,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		FileInputStream fileInputStream;
 		params.put("address", a.getClient().getAddress());
 		URL filePath = this.getClass().getClassLoader().getResource("jasper/BankReport.jasper");
+		System.out.println("file "+filePath.openStream());
 		JasperPrint jp = JasperFillManager.fillReport(filePath.openStream(),
 				params, dataSource.getConnection());
 		File pdf = new File(
@@ -254,7 +255,6 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			IOUtils.copy(fileInputStream, response.getOutputStream());
 			fileInputStream.close();
 			response.flushBuffer();
-			pdf.delete();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

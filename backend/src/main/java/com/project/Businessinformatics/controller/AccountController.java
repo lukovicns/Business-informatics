@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.validation.Valid;
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,11 +70,11 @@ public class AccountController {
 	@RequestMapping(value = "delete/{accountId}/{transverAcc}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Account> deleteAccount(@PathVariable("accountId") Long accountId,
-			@PathVariable("transverAcc") String transverAcc) {
+			@PathVariable("transverAcc") String transverAcc) throws JAXBException, DatatypeConfigurationException {
 		Account account = accountServiceImpl.deleteAccount(accountId);
 		if (account != null) {
 			revokedAccountServiceImpl.createRevokedAccount(account, transverAcc);
-			//accountServiceImpl.transferAccount(account, transverAcc);
+			accountServiceImpl.transferAccount(account, transverAcc);
 			return new ResponseEntity<Account>(account, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
