@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -86,17 +87,16 @@ public class DailyAccountStatus implements Serializable{
 	@XmlElement(name="account", required=true)
 	private Account account;
 	
-	@OneToMany(mappedBy = "dailyAccountStatus", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<AnalyticalStatement> analyticalStatements = new HashSet<>();
+	@OneToOne
+	private AnalyticalStatement analyticalStatement;
 	
-	@JsonIgnore
-	public Set<AnalyticalStatement> getAnalyticalStatements(){
-		return analyticalStatements;
+	
+	public AnalyticalStatement getAnalyticalStatement() {
+		return analyticalStatement;
 	}
-	
-	@JsonProperty
-	public void setAnalyticalStatements(Set<AnalyticalStatement> analyticalStatements){
-		this.analyticalStatements = analyticalStatements;
+
+	public void setAnalyticalStatement(AnalyticalStatement analyticalStatement) {
+		this.analyticalStatement = analyticalStatement;
 	}
 
 	public Long getId() {
