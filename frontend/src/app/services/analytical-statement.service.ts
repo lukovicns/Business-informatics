@@ -16,9 +16,4 @@ export class AnalyticalStatementService {
   addAnalyticalStatements(createUrl: string, data) {
     return this.http.post(url + 'analyticalStatements' + createUrl, data);
   }
-
-  exportToXML(accountId: number, startDate: string, endDate: string) {
-    let exportUrl = url + 'analyticalStatements/exportxml/' + accountId + '/' + startDate + '/' + endDate;
-    return this.http.get(exportUrl);
-  }
 }

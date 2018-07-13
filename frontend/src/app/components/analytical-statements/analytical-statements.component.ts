@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AnalyticalStatementService } from '../../services/analytical-statement.service';
 import { CurrencyService } from '../../services/currency.service';
 import { CityService } from '../../services/city.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-analytical-statements',
@@ -16,10 +17,12 @@ export class AnalyticalStatementsComponent implements OnInit {
   analyticalStatements: any = [];
   currencies: any = [];
   cities: any = [];
+  accounts: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private analyticalStatementService: AnalyticalStatementService,
+    private accountService: AccountService,
     private currencyService: CurrencyService,
     private cityService: CityService
   ) { }
@@ -53,12 +56,13 @@ export class AnalyticalStatementsComponent implements OnInit {
     this.analyticalStatementService.getAnalyticalStatements()
     .subscribe(res => {
       this.analyticalStatements = res;
-      console.log(res);
     });
     this.currencyService.getCurrencies()
     .subscribe(res => this.currencies = res);
     this.cityService.getCities()
     .subscribe(res => this.cities = res);
+    this.accountService.getAccounts()
+    .subscribe(res => this.accounts = res);
   }
 
   addAnalyticalStatement() {

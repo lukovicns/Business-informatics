@@ -40,7 +40,9 @@
               </div>
               <div class="form-group">
                 <label for="originatorAccount">Originator account</label>
-                <input type="text" class="form-control" id="originatorAccount" formControlName="originatorAccount">
+                <select id="originatorAccount" class="form-control" formControlName="originatorAccount">
+                  <option value="{{ account.id }}" *ngFor="let account of accounts">{{ account.accountNumber }}</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="model">Model</label>
@@ -52,7 +54,9 @@
               </div>
               <div class="form-group">
                 <label for="recipientAccount">Recipient account</label>
-                <input type="text" class="form-control" id="recipientAccount" formControlName="recipientAccount">
+                <select class="form-control" id="recipientAccount" formControlName="recipientAccount">
+                  <option value="{{ analyticalStatement.recipientAccount }}" *ngFor="let analyticalStatement of analyticalStatements">{{ analyticalStatement.recipientAccount }}</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="approvalModel">Approval model</label>

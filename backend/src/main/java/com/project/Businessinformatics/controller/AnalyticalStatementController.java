@@ -62,8 +62,11 @@ public class AnalyticalStatementController {
 	}
 
     @RequestMapping(value = "/export/{accountId}/{startDate}/{endDate}", method = RequestMethod.GET)
-    public void exportToPdf(@PathVariable("accountId") Long accountId,@PathVariable("startDate") Date start,@PathVariable("endDate") Date end,HttpServletResponse response) throws ParseException, SQLException, IOException, JRException {
-	    analyticalStatementService.exportToPdf(accountId, start,end,response);
+    public void exportToPdf(@PathVariable("accountId") Long accountId,@PathVariable("startDate") String start, @PathVariable("endDate") String end, HttpServletResponse response) throws ParseException, SQLException, IOException, JRException {
+	    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	    Date startDate = dateFormatter.parse(start);
+	    Date endDate = dateFormatter.parse(end);
+    	analyticalStatementService.exportToPdf(accountId, startDate, endDate, response);
     }
   
     @RequestMapping(value = "/exportxml/{accountId}/{startDate}/{endDate}", method = RequestMethod.GET)

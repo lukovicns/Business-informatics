@@ -5,7 +5,6 @@ import { AccountService } from '../../services/account.service';
 import { BankService } from '../../services/bank.service';
 import { ClientService } from '../../services/client.service';
 import { CurrencyService } from '../../services/currency.service';
-import { AnalyticalStatementService } from '../../services/analytical-statement.service';
 
 @Component({
   selector: 'app-accounts',
@@ -22,14 +21,14 @@ export class AccountsComponent implements OnInit {
   bank = {};
   client = {};
   currency = {};
+  accountId: number;
 
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
     private bankService: BankService,
     private clientService: ClientService,
-    private currencyService: CurrencyService,
-    private analyticalStatementService: AnalyticalStatementService
+    private currencyService: CurrencyService
   ) { }
 
   accountForm = this.formBuilder.group({
@@ -40,7 +39,12 @@ export class AccountsComponent implements OnInit {
     currency: ['', Validators.required]
   });
 
-  exportForm = this.formBuilder.group({
+  exportXMLForm = this.formBuilder.group({
+    startDate: ['', Validators.required], 
+    endDate: ['', Validators.required]
+  });
+
+  exportPDFForm = this.formBuilder.group({
     startDate: ['', Validators.required], 
     endDate: ['', Validators.required]
   });
@@ -54,6 +58,28 @@ export class AccountsComponent implements OnInit {
     .subscribe(res => this.clients = res);
     this.currencyService.getCurrencies()
     .subscribe(res => this.currencies = res);
+  }
+
+  setAccountId(accountId: number) {
+    this.accountId = accountId;
+  }
+
+  exportToXML() {
+    this.accountService.exportToXML(this.accountId, this.exportXMLForm.value['startDate'], this.exportXMLForm.value['endDate'])
+    .subscribe(res => {
+      console.log(res);
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  exportToPDF() {
+    this.accountService.exportToPDF(this.accountId, this.exportPDFForm.value['startDate'], this.exportPDFForm.value['endDate'])
+    .subscribe(res => {
+      console.log(res);
+    }, err => {
+      console.log(err);
+    });
   }
 
   addAccount() {
@@ -84,15 +110,6 @@ export class AccountsComponent implements OnInit {
     .subscribe(res => {
       console.log(res);
       this.ngOnInit();
-    }, err => {
-      console.log(err);
-    });
-  }
-  
-  exportToXML(accountId: number) {
-    this.analyticalStatementService.exportToXML(accountId, this.exportForm.value['startDate'], this.exportForm.value['endDate'])
-    .subscribe(res => {
-      console.log(res);
     }, err => {
       console.log(err);
     });

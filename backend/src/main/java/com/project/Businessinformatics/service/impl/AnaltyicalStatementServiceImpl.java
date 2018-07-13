@@ -174,11 +174,12 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		params.put("startDate", startDate);
 		params.put("endDate", endDate);
 		params.put("client", a.getClient().getName() + " " + a.getClient().getSurname());
-		URL url = this.getClass().getClassLoader().getResource("jasper/logo.png");
-		params.put("logo", url);
+//		URL url = this.getClass().getClassLoader().getResource("jasper/logo.png");
+//		params.put("logo", url
 		FileInputStream fileInputStream;
 		params.put("address", a.getClient().getAddress());
-		JasperPrint jp = JasperFillManager.fillReport(getClass().getResource("/jasper/BankReport.jasper").openStream(),
+		URL filePath = this.getClass().getClassLoader().getResource("jasper/BankReport.jasper");
+		JasperPrint jp = JasperFillManager.fillReport(filePath.openStream(),
 				params, dataSource.getConnection());
 		File pdf = new File(
 				System.getProperty("user.home") + "/Downloads/" + "izvestaj-" + a.getAccountNumber() + ".pdf");
@@ -220,8 +221,10 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 			Account account =  accountService.getAccount(accountId);
-			
-			List<AnalyticalStatement> statements = findClientStatements(account.getAccountNumber(), startDate, endDate);
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedStartDate = dateFormatter.format(startDate);
+			String formattedEndDate = dateFormatter.format(endDate);
+			List<AnalyticalStatement> statements = analyticalStatementRepository.findClientStatements(account.getAccountNumber(), formattedStartDate, formattedEndDate);
 			
 			ClientStatement clientStatement = new ClientStatement();
 			clientStatement.setAccount(account);
@@ -257,17 +260,16 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		}
 	}
 
-	private List<AnalyticalStatement> findClientStatements(String accountNumber, Date startDate, Date endDate) throws ParseException {
-		List<AnalyticalStatement> clientStatements = new ArrayList<AnalyticalStatement>();
-		for (AnalyticalStatement as : getAnalyticalStatements()) {
-			Date dateOfReceipt = new SimpleDateFormat("yyyy-MM-dd").parse(as.getDateOfReceipt());
-			System.out.println(dateOfReceipt);
-			if (as.getOriginatorAccount().equals(accountNumber) && dateOfReceipt.compareTo(startDate) >= 0 && dateOfReceipt.compareTo(endDate) <= 0) {
-				clientStatements.add(as);
-			}
-		}
-		return clientStatements;
-	}
+//	private List<AnalyticalStatement> findClientStatements(String accountNumber, Date startDate, Date endDate) throws ParseException {
+//		List<AnalyticalStatement> clientStatements = new ArrayList<AnalyticalStatement>();
+//		for (AnalyticalStatement as : getAnalyticalStatements()) {
+//			Date dateOfReceipt = new SimpleDateFormat("yyyy-MM-dd").parse(as.getDateOfReceipt());
+//			if (as.getOriginatorAccount().equals(accountNumber)/* && dateOfReceipt.compareTo(startDate) >= 0 && dateOfReceipt.compareTo(endDate) <= 0*/) {
+//				clientStatements.add(as);
+//			}
+//		}
+//		return clientStatements;
+//	}
 
 	@Override
 	public void delete(Long id) {
