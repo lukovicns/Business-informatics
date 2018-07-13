@@ -18,6 +18,8 @@ export class AnalyticalStatementsComponent implements OnInit {
   currencies: any = [];
   cities: any = [];
   accounts: any = [];
+  modes: any = [];
+  isHidden: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,7 +51,8 @@ export class AnalyticalStatementsComponent implements OnInit {
     approvalAuthorizationNumber: ['', Validators.required],
     amount: ['', Validators.required],
     city: ['', Validators.required],
-    currency: ['', Validators.required]
+    currency: ['', Validators.required],
+    analyticalStatementMode: ['', Validators.required]
   });
 
   ngOnInit() {
@@ -63,6 +66,7 @@ export class AnalyticalStatementsComponent implements OnInit {
     .subscribe(res => this.cities = res);
     this.accountService.getAccounts()
     .subscribe(res => this.accounts = res);
+    this.modes = ['PAYMENT', 'PAYOUT', 'TRANSFER'];
   }
 
   addAnalyticalStatement() {
@@ -82,7 +86,7 @@ export class AnalyticalStatementsComponent implements OnInit {
       'urgently': document.querySelector('#urgently')['checked'],
       'placeOfAcceptance': this.findCity(this.analyticalStatementForm.value['city']),
       'currency': this.findCurrency(this.analyticalStatementForm.value['currency']),
-      'payment': document.querySelector('#payment')['checked']
+      'analyticalStatementMode': this.analyticalStatementForm.value['analyticalStatementMode']
     }
     let createUrl = '/create/' + this.analyticalStatementForm.value['currency'] +
                     '/' + this.analyticalStatementForm.value['city'] +
@@ -94,6 +98,7 @@ export class AnalyticalStatementsComponent implements OnInit {
       this.analyticalStatementForm.reset();
     }, err => {
       console.log(err);
+      this.analyticalStatementForm.reset();
     });
   }
 

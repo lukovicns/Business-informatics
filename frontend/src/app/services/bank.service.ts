@@ -16,4 +16,12 @@ export class BankService {
   getBank(id: number) {
     return this.http.get(url + 'banks/' + id);
   }
+
+  addBank(countryId: number, data) {
+    return this.http.post(url + 'banks/' + countryId, data);
+  }
+
+  exportToPDF(bankId: number) {
+    return this.http.get(url + 'banks/export/' + bankId);
+  }
 }

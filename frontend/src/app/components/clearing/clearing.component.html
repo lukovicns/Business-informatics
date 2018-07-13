@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+<div [@fadeIn]>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Clearing settlements</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <table class="table" *ngIf="clearings && clearings.length > 0; else noClearings">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Currency</th>
+          <th scope="col">Currency date</th>
+          <th scope="col">Payment bank</th>
+          <th scope="col">Reciever bank</th>
+          <th scope="col">Total amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let clearing of clearings">
+          <th scope="row">1</th>
+          <td>{{ clearing.currency?.officialCode }}</td>
+          <td>{{ clearing.currencyDate }}</td>
+          <td>{{ clearing.paymentBank?.name }}</td>
+          <td>{{ clearing.recieverBank?.name }}</td>
+          <td>{{ clearing.totalAmount }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noClearings>
+      <h1>There are no clearing settlement requests yet!</h1>
+    </ng-template>
+  </div>
+</div>

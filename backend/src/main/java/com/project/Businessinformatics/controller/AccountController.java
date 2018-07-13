@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
@@ -44,6 +45,12 @@ public class AccountController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, value = "/active")
+	@ResponseBody
+	public ResponseEntity<List<Account>> getActiveAccounts() {
+		return new ResponseEntity<List<Account>>(accountServiceImpl.getActiveAccounts(), HttpStatus.OK);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -67,20 +74,22 @@ public class AccountController {
 		}
 	}
 
-	@RequestMapping(value = "delete/{accountId}/{transverAcc}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "delete/{accountId}/{transferAcc}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Account> deleteAccount(@PathVariable("accountId") Long accountId,
-			@PathVariable("transverAcc") String transverAcc) throws JAXBException, DatatypeConfigurationException {
+			@PathVariable("transverAcc") String transferAcc) throws JAXBException, DatatypeConfigurationException {
 		Account account = accountServiceImpl.deleteAccount(accountId);
 		if (account != null) {
-			revokedAccountServiceImpl.createRevokedAccount(account, transverAcc);
-			accountServiceImpl.transferAccount(account, transverAcc);
+			if (account.getAccountNumber().equals(transferAcc)) {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
+			revokedAccountServiceImpl.createRevokedAccount(account, transferAcc);
+			accountServiceImpl.transferAccount(account, transferAcc);
 			return new ResponseEntity<Account>(account, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
 	
 	@RequestMapping(value = "serviceRefresh", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

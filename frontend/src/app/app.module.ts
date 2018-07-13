@@ -14,6 +14,9 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { AnalyticalStatementsComponent } from './components/analytical-statements/analytical-statements.component';
+import { RtgsComponent } from './components/rtgs/rtgs.component';
+import { ClearingComponent } from './components/clearing/clearing.component';
+import { BanksComponent } from './components/banks/banks.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { AnalyticalStatementsComponent } from './components/analytical-statement
     RegisterComponent,
     LoginComponent,
     AccountsComponent,
-    AnalyticalStatementsComponent
+    AnalyticalStatementsComponent,
+    RtgsComponent,
+    ClearingComponent,
+    BanksComponent
   ],
   imports: [
     BrowserModule,
