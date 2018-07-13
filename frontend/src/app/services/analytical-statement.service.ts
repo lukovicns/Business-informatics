@@ -13,8 +13,8 @@ export class AnalyticalStatementService {
     return this.http.get(url + 'analyticalStatements');
   }
 
-  addAnalyticalStatements(createUrl: string) {
-    return this.http.post(url + 'analyticalStatements' + createUrl, {});
+  addAnalyticalStatements(createUrl: string, data) {
+    return this.http.post(url + 'analyticalStatements' + createUrl, data);
   }
 
   exportToXML(accountId: number, startDate: string, endDate: string) {

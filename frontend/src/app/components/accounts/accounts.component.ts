@@ -88,6 +88,7 @@ export class AccountsComponent implements OnInit {
       console.log(err);
     });
   }
+  
   exportToXML(accountId: number) {
     this.analyticalStatementService.exportToXML(accountId, this.exportForm.value['startDate'], this.exportForm.value['endDate'])
     .subscribe(res => {

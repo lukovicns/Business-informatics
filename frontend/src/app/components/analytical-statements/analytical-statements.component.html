@@ -19,16 +19,16 @@
           <div class="card-body">
             <form [formGroup]="analyticalStatementForm" (ngSubmit)="addAnalyticalStatement()">
               <div class="form-group">
-                <label for="currency">Currency</label>
-                <select id="currency" class="form-control" formControlName="currency">
-                  <option value="{{ currency.id }}" *ngFor="let currency of currencies">{{ currency.officialCode }}</option>
-                </select>
+                <label for="originator">Originator</label>
+                <input id="originator" class="form-control" formControlName="originator">
               </div>
               <div class="form-group">
-                <label for="city">City</label>
-                <select id="city" class="form-control" formControlName="city">
-                  <option value="{{ city.id }}" *ngFor="let city of cities">{{ city.name }}</option>
-                </select>
+                <label for="purpose">Purpose</label>
+                <input id="purpose" class="form-control" formControlName="purpose">
+              </div>
+              <div class="form-group">
+                <label for="recipient">Recipient</label>
+                <input id="recipient" class="form-control" formControlName="recipient">
               </div>
               <div class="form-group">
                 <label for="dateOfReceipt">Date of receipt</label>
@@ -38,6 +38,50 @@
                 <label for="currencyDate">Currency date</label>
                 <input type="date" class="form-control" id="currencyDate" formControlName="currencyDate">
               </div>
+              <div class="form-group">
+                <label for="originatorAccount">Originator account</label>
+                <input type="text" class="form-control" id="originatorAccount" formControlName="originatorAccount">
+              </div>
+              <div class="form-group">
+                <label for="model">Model</label>
+                <input type="number" class="form-control" id="model" formControlName="model">
+              </div>
+              <div class="form-group">
+                <label for="debitAuthorizationNumber">Debit authorization number</label>
+                <input type="text" class="form-control" id="debitAuthorizationNumber" formControlName="debitAuthorizationNumber">
+              </div>
+              <div class="form-group">
+                <label for="recipientAccount">Recipient account</label>
+                <input type="text" class="form-control" id="recipientAccount" formControlName="recipientAccount">
+              </div>
+              <div class="form-group">
+                <label for="approvalModel">Approval model</label>
+                <input type="text" class="form-control" id="approvalModel" formControlName="approvalModel">
+              </div>
+              <div class="form-group">
+                <label for="approvalAuthorizationNumber">Approval authorization number</label>
+                <input type="text" class="form-control" id="approvalAuthorizationNumber" formControlName="approvalAuthorizationNumber">
+              </div>
+                <input type="checkbox" id="urgently">&nbsp;Urgently
+                <br><br>
+               <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" min="0" class="form-control" id="amount" formControlName="amount">
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <select id="city" class="form-control" formControlName="city">
+                  <option value="{{ city.id }}" *ngFor="let city of cities">{{ city.name }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="currency">Currency</label>
+                <select id="currency" class="form-control" formControlName="currency">
+                  <option value="{{ currency.id }}" *ngFor="let currency of currencies">{{ currency.officialCode }}</option>
+                </select>
+              </div>
+              <input type="checkbox" id="payment">&nbsp;Payment
+              <br><br>
               <button type="submit" class="btn btn-info" [disabled]="!analyticalStatementForm.valid">Add analytical statement</button>
             </form>
           </div>

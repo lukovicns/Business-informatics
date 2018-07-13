@@ -16,8 +16,4 @@ export class AccountService {
   addAccount(data) {
     return this.http.post(url + 'accounts', data);
   }
-
-  exportToXml() {
-    
-  }
 }
