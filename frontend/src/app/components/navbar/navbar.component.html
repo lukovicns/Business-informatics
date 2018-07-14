@@ -10,13 +10,28 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/accounts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="/banks" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="userIsLoggedIn()">
+          <i class="fas fa-university"></i>&nbsp;Banks
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/accounts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="userIsLoggedIn()">
           <i class="fas fa-address-card"></i>&nbsp;Accounts
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/analytical-statements" routerLinkActive="active" *ngIf="!userIsLoggedIn()">
+        <a class="nav-link" routerLink="/analytical-statements" routerLinkActive="active" *ngIf="userIsLoggedIn()">
           <i class="fas fa-chart-line"></i>&nbsp;&nbsp;Analytical Statements
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/rtgs" routerLinkActive="active" *ngIf="userIsLoggedIn()">
+          <i class="fas fa-clock"></i>&nbsp;&nbsp;RTGS Settlements
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/clearings" routerLinkActive="active" *ngIf="userIsLoggedIn()">
+          <i class="fas fa-handshake"></i>&nbsp;&nbsp;Clearing Settlements
         </a>
       </li>
     </ul>

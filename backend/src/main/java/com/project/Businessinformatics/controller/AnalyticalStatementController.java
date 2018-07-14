@@ -1,5 +1,6 @@
 package com.project.Businessinformatics.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -8,7 +9,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +48,7 @@ public class AnalyticalStatementController {
 	public Collection<AnalyticalStatement> createAnalyticalStatement(@PathVariable("currencyId") String currencyId,
 			 @PathVariable("cityId") String cityId,
 			@PathVariable("dateOfReceipt") String dateOfReceipt, @PathVariable("currencyDate") String currencyDate,
-			@RequestBody AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException {
+			@RequestBody AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException, ParseException {
 		return analyticalStatementService.createAnalyticalStatement(currencyId, cityId,
 				dateOfReceipt, currencyDate, analyticalStatement);
 	}
@@ -84,6 +88,19 @@ public class AnalyticalStatementController {
 			@PathVariable("dateOfReceipt") String dateOfReceipt, @PathVariable("currencyDate") String currencyDate,
 			@RequestBody AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException {
     }
+    
+    @RequestMapping("/import/{id}")
+    public ResponseEntity<Object> importAS(@PathVariable Long id) throws JAXBException {
+    	File file = new File("C://Users/sale1/Desktop/analyticalStatement"+id.toString()+".xml");
+    	JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
+		Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
+
+		// output pretty printed
+		AnalyticalStatement aStatement = new AnalyticalStatement();
+		aStatement = (AnalyticalStatement) jaxbMarshaller.unmarshal(file);
+    	return new ResponseEntity<>(aStatement,HttpStatus.OK);
+    }
+    
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteAnalyticalStatement(@PathVariable Long id) {

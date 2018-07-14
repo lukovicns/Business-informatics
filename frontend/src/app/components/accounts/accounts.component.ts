@@ -22,6 +22,8 @@ export class AccountsComponent implements OnInit {
   client = {};
   currency = {};
   accountId: number;
+  hiddenAccountId: number;
+  activeAccounts: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +54,8 @@ export class AccountsComponent implements OnInit {
   ngOnInit() {
     this.accountService.getAccounts()
     .subscribe(res => this.accounts = res);
+    this.accountService.getActiveAccounts()
+    .subscribe(res => this.activeAccounts = res)
     this.bankService.getBanks()
     .subscribe(res => this.banks = res);
     this.clientService.getClients()
@@ -107,6 +111,22 @@ export class AccountsComponent implements OnInit {
       'currency': this.currency
     }
     this.accountService.addAccount(data)
+    .subscribe(res => {
+      console.log(res);
+      this.ngOnInit();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  hideAccount(hiddenAccountId: number) {
+    this.hiddenAccountId = hiddenAccountId;
+  }
+
+  revokeAccount() {
+    let selectedAccountNumberSelector = document.querySelector('#selectedAccountNumber');
+    let transferAccountNumber = selectedAccountNumberSelector['options'][selectedAccountNumberSelector['selectedIndex']].value;
+    this.accountService.deleteAccount(this.hiddenAccountId, transferAccountNumber)
     .subscribe(res => {
       console.log(res);
       this.ngOnInit();

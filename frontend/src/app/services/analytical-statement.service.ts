@@ -16,4 +16,8 @@ export class AnalyticalStatementService {
   addAnalyticalStatements(createUrl: string, data) {
     return this.http.post(url + 'analyticalStatements' + createUrl, data);
   }
+  
+  import(id) {
+      return this.http.get(url + 'analyticalStatements/' + id)
+  }
 }

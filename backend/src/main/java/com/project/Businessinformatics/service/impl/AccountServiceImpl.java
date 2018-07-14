@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.Businessinformatics.model.Account;
 import com.project.Businessinformatics.model.AnalyticalStatement;
 import com.project.Businessinformatics.model.AnalyticalStatementMode;
 import com.project.Businessinformatics.model.DailyAccountStatus;
-import com.project.Businessinformatics.model.Account;
 import com.project.Businessinformatics.repository.AccountRepository;
 import com.project.Businessinformatics.repository.CurrencyExchangeRepository;
 import com.project.Businessinformatics.service.AccountService;
@@ -41,6 +42,7 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	public Account createAccount(Account a) {
+		a.setActive(true);
 		return accountRepository.save(a);
 	}
 
@@ -143,4 +145,13 @@ public class AccountServiceImpl implements AccountService {
 	    analyticalStatementService.doTransaction(transferStatement);
 	}
 
+	public List<Account> getActiveAccounts() {
+		List<Account> activeAccounts = new ArrayList<Account>();
+		for (Account account : accountRepository.findAll()) {
+			if (account.isActive()) {
+				activeAccounts.add(account);
+			}
+		}
+		return activeAccounts;
+	}
 }

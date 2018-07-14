@@ -23,9 +23,9 @@ public interface AnaltyicalStatementService {
 			  String cityId,
 			  String dateOfReceipt,
 			  String currencyDate,
-			  AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException;
+			  AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException, ParseException;
 	
-	Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement) throws JAXBException, DatatypeConfigurationException;
+	Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement) throws JAXBException, DatatypeConfigurationException, ParseException;
 
 	void exportToPdf(Long accountId,Date startDate,Date endDate,HttpServletResponse response) throws  SQLException, IOException, JRException;
 	

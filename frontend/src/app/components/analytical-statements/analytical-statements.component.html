@@ -41,7 +41,7 @@
               <div class="form-group">
                 <label for="originatorAccount">Originator account</label>
                 <select id="originatorAccount" class="form-control" formControlName="originatorAccount">
-                  <option value="{{ account.id }}" *ngFor="let account of accounts">{{ account.accountNumber }}</option>
+                  <option value="{{ account.accountNumber }}" *ngFor="let account of accounts">{{ account.accountNumber }}</option>
                 </select>
               </div>
               <div class="form-group">
@@ -84,9 +84,13 @@
                   <option value="{{ currency.id }}" *ngFor="let currency of currencies">{{ currency.officialCode }}</option>
                 </select>
               </div>
-              <input type="checkbox" id="payment">&nbsp;Payment
-              <br><br>
-              <button type="submit" class="btn btn-info" [disabled]="!analyticalStatementForm.valid">Add analytical statement</button>
+              <div class="form-group">
+                <label for="analyticalStatementMode">Analytical Statement Mode</label>
+                <select id="analyticalStatementMode" class="form-control" formControlName="analyticalStatementMode">
+                  <option value="{{ mode }}" *ngFor="let mode of modes">{{ mode }}</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-info" >Add analytical statement</button>
             </form>
           </div>
         </div>
@@ -110,6 +114,10 @@
                 <th scope="col">Approval authorization number</th>
                 <th scope="col">Urgently</th>
                 <th scope="col">Amount</th>
+                <th scope="col">City</th>
+                <th scope="col">Currency</th>
+                <th scope="col">Mode</th>
+                <th scope="col">Details</th>
               </tr>
             </thead>
             <tbody>
@@ -128,6 +136,12 @@
                 <td>{{ analyticalStatement.approvalAuthorizationNumber }}</td>
                 <td>{{ analyticalStatement.urgently }}</td>
                 <td>{{ analyticalStatement.amount }}</td>
+                <td>{{ analyticalStatement.placeOfAcceptance?.name }}</td>
+                <td>{{ analyticalStatement.currency?.officialCode }}</td>
+                <td>{{ analyticalStatement.analyticalStatementMode }}</td>
+                <td>
+                     <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="import(analyticalStatement.id)">Import</button>
+                </td>
               </tr>
             </tbody>
           </table>

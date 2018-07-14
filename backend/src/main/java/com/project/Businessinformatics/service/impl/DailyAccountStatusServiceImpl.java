@@ -110,6 +110,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		dailyAccountStatus.setPreviousAmount(dailyAccountStatus.getCurrentAmount());
 		dailyAccountStatus.setTransferExpenses(dailyAccountStatus.getTransferExpenses() + analyticalStatement.getAmount());
 		dailyAccountStatus.setCurrentAmount(dailyAccountStatus.getCurrentAmount() - analyticalStatement.getAmount());
+		dailyAccountStatus.setAnalyticalStatement(analyticalStatement);
 		return dailyAccountStatusRepository.save(dailyAccountStatus);
 	}
 	
@@ -119,6 +120,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		dailyAccountStatus.setPreviousAmount(dailyAccountStatus.getCurrentAmount());
 		dailyAccountStatus.setTransferInFavor(dailyAccountStatus.getTransferInFavor() + analyticalStatement.getAmount());
 		dailyAccountStatus.setCurrentAmount(dailyAccountStatus.getCurrentAmount() + analyticalStatement.getAmount());
+		dailyAccountStatus.setAnalyticalStatement(analyticalStatement);
 		return dailyAccountStatusRepository.save(dailyAccountStatus);
 	}
 	

@@ -13,6 +13,10 @@ export class AccountService {
     return this.http.get(url + 'accounts');
   }
 
+  getActiveAccounts() {
+    return this.http.get(url + 'accounts/active');
+  }
+
   addAccount(data) {
     return this.http.post(url + 'accounts', data);
   }
@@ -25,5 +29,9 @@ export class AccountService {
   exportToPDF(accountId: number, startDate: string, endDate: string) {
     let exportUrl = url + 'analyticalStatements/export/' + accountId + '/' + startDate + '/' + endDate;
     return this.http.get(exportUrl);
+  }
+
+  deleteAccount(accountId: number, transferAccountNumber: string) {
+    return this.http.post(url + 'accounts/delete/' + accountId + '/' + transferAccountNumber, null);
   }
 }

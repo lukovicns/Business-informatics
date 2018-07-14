@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div [@fadeIn]>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">RTGS settlements</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <table class="table" *ngIf="rtgsList && rtgsList.length > 0; else noRtgs">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Analytical statement</th>
+          <th scope="col">Payment bank</th>
+          <th scope="col">Reciever bank</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rtgs of rtgsList">
+          <th scope="row">1</th>
+          <td>{{ rtgs.analyticalStatement?.id }}</td>
+          <td>{{ rtgs.paymentBank?.name }}</td>
+          <td>{{ rtgs.recieverBank?.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noRtgs>
+      <h1>There are no RTGS request yet!</h1>
+    </ng-template>
+  </div>
+</div>

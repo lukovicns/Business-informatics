@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.Businessinformatics.model.DailyAccountStatus;
 import com.project.Businessinformatics.model.Account;
 import com.project.Businessinformatics.model.AnalyticalStatement;
 import com.project.Businessinformatics.model.AnalyticalStatementMode;
@@ -39,6 +40,7 @@ import com.project.Businessinformatics.service.AccountService;
 import com.project.Businessinformatics.service.AnaltyicalStatementService;
 import com.project.Businessinformatics.service.CityService;
 import com.project.Businessinformatics.service.CurrencyService;
+import com.project.Businessinformatics.service.DailyAccountStatusService;
 import com.project.Businessinformatics.service.InterBankService;
 import com.project.Businessinformatics.util.XmlPaths;
 
@@ -58,6 +60,9 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private DailyAccountStatusService dailyAccountStatusService;
 	
 	@Autowired
 	private InterBankService interBankService;
@@ -82,7 +87,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 	
 	@Override
 	public Collection<AnalyticalStatement> createAnalyticalStatement(String currencyId, String cityId,
-			String dateOfReceipt, String currencyDate, AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException {
+			String dateOfReceipt, String currencyDate, AnalyticalStatement analyticalStatement) throws DatatypeConfigurationException, JAXBException, ParseException {
 		
 		if (currencyId != null && !currencyId.trim().equals("NOT_ENTERED"))
 			analyticalStatement.setCurrency(currencyService.getCurrency(new Long(currencyId)));
@@ -97,7 +102,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		return this.doTransaction(analyticalStatement);
 	}
 	
-	public Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement) throws JAXBException, DatatypeConfigurationException
+	public Collection<AnalyticalStatement> doTransaction(AnalyticalStatement analyticalStatement) throws JAXBException, DatatypeConfigurationException, ParseException
 	{	
 		ArrayList<AnalyticalStatement> analyticalStatements = new ArrayList<>();
 		
@@ -107,38 +112,34 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 					.equals(analyticalStatement.getRecipientAccount().substring(0, 3))) {
 				
 				analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
+				updateOriginatorStatus(analyticalStatement);
 				interBankService.RTGSOrClearing(analyticalStatement);
 				
 			} else {
 				analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
-				
-				File file = new File(XmlPaths.getXmlPath() + "analyticalStatement" + analyticalStatement.getId() + ".xml");
-				JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-				// output pretty printed
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-				jaxbMarshaller.marshal(analyticalStatement, file);
-				jaxbMarshaller.marshal(analyticalStatement, System.out);
-
+				updateOriginatorStatus(analyticalStatement);
+				updateRecipientStatus(analyticalStatement);
 			}
 			
-		} else {
-			
+		} else if (analyticalStatement.getAnalyticalStatementMode() == AnalyticalStatementMode.PAYMENT) {
 			analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
-			
-			File file = new File(XmlPaths.getXmlPath() + "analyticalStatement" + analyticalStatement.getId() + ".xml");
-			JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
-			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-			// output pretty printed
-			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-			jaxbMarshaller.marshal(analyticalStatement, file);
-			jaxbMarshaller.marshal(analyticalStatement, System.out);
+			updateRecipientStatus(analyticalStatement);
+		} else {
+			analyticalStatements.add(analyticalStatementRepository.save(analyticalStatement));
+			updateOriginatorStatus(analyticalStatement);
 
 		}
+		
+		File file = new File(XmlPaths.getXmlPath() + "analyticalStatement" + analyticalStatement.getId() + ".xml");
+
+		JAXBContext jaxbContext = JAXBContext.newInstance(AnalyticalStatement.class);
+		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+		// output pretty printed
+		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+		jaxbMarshaller.marshal(analyticalStatement, file);
+		jaxbMarshaller.marshal(analyticalStatement, System.out);
 		
 		return analyticalStatements;
 	}
@@ -164,6 +165,19 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		clone.setAnalyticalStatementMode(as.getAnalyticalStatementMode());
 		return clone;
 	}
+	
+	private void updateOriginatorStatus(AnalyticalStatement analyticalStatement) throws ParseException {
+		@SuppressWarnings("unused")
+		DailyAccountStatus originatorDailyAccountStatus = dailyAccountStatusService
+				.updateOriginatorDailyAccountStatus(analyticalStatement);
+	}
+
+	private void updateRecipientStatus(AnalyticalStatement analyticalStatement) throws ParseException {
+		@SuppressWarnings("unused")
+		DailyAccountStatus recipientDailyAccountStatus = dailyAccountStatusService
+				.updateRecipiantDailyAccountStatus(analyticalStatement);
+	}
+
 
 	@Override
 	public void exportToPdf(Long accountId, Date startDate, Date endDate, HttpServletResponse response)
@@ -228,6 +242,7 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedStartDate = dateFormatter.format(startDate);
 			String formattedEndDate = dateFormatter.format(endDate);
+			System.out.println("date "+ formattedStartDate + " "+formattedEndDate);
 			List<AnalyticalStatement> statements = analyticalStatementRepository.findClientStatements(account.getAccountNumber(), formattedStartDate, formattedEndDate);
 			
 			ClientStatement clientStatement = new ClientStatement();
@@ -263,16 +278,16 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 		}
 	}
 
-//	private List<AnalyticalStatement> findClientStatements(String accountNumber, Date startDate, Date endDate) throws ParseException {
-//		List<AnalyticalStatement> clientStatements = new ArrayList<AnalyticalStatement>();
-//		for (AnalyticalStatement as : getAnalyticalStatements()) {
-//			Date dateOfReceipt = new SimpleDateFormat("yyyy-MM-dd").parse(as.getDateOfReceipt());
-//			if (as.getOriginatorAccount().equals(accountNumber)/* && dateOfReceipt.compareTo(startDate) >= 0 && dateOfReceipt.compareTo(endDate) <= 0*/) {
-//				clientStatements.add(as);
-//			}
-//		}
-//		return clientStatements;
-//	}
+	/*private List<AnalyticalStatement> findClientStatements(String accountNumber, Date startDate, Date endDate) throws ParseException {
+		List<AnalyticalStatement> clientStatements = new ArrayList<AnalyticalStatement>();
+		for (AnalyticalStatement as : getAnalyticalStatements()) {
+			Date dateOfReceipt = new SimpleDateFormat("yyyy-MM-dd").parse(as.getDateOfReceipt());
+			if (as.getOriginatorAccount().equals(accountNumber) && dateOfReceipt.compareTo(startDate) >= 0 && dateOfReceipt.compareTo(endDate) <= 0) {
+				clientStatements.add(as);
+			}
+		}
+		return clientStatements;
+	}*/
 
 	@Override
 	public void delete(Long id) {

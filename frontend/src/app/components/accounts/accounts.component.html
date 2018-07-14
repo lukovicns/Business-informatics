@@ -67,6 +67,7 @@
                 <th scope="col">Currency</th>
                 <th scope="col">Export (XML)</th>
                 <th scope="col">Export (PDF)</th>
+                <th scope="col">Revoke account</th>
               </tr>
             </thead>
             <tbody>
@@ -82,9 +83,7 @@
                 <td>{{ account.client?.email }}</td>
                 <td>{{ account.currency?.officialCode }}</td>
                 <td>
-                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exportModal" (click)="setAccountId(account.id)">
-                    Export to XML
-                  </button>
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exportModal" (click)="setAccountId(account.id)">Export to XML</button>
                   <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -115,9 +114,7 @@
                   </div>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exportPDFModal" (click)="setAccountId(account.id)">
-                    Export to PDF
-                  </button>
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exportPDFModal" (click)="setAccountId(account.id)">Export to PDF</button>
                   <div class="modal fade" id="exportPDFModal" tabindex="-1" role="dialog" aria-labelledby="exportPDFLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -143,6 +140,33 @@
                             <button type="submit" class="btn btn-primary" [disabled]="!exportPDFForm.valid">Export to PDF</button>
                           </div>
                         </form>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#revokeModal" (click)="hideAccount(account.id)" *ngIf="account.active; else inactiveAccount">Revoke account</button>
+                  <ng-template #inactiveAccount>/</ng-template>
+                  <div class="modal fade" id="revokeModal" tabindex="-1" role="dialog" aria-labelledby="revokeLabel" aria-hidden="true" data-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="revokeLabel">Choose transfer account</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <select id="selectedAccountNumber" class="form-control">
+                            <option value="{{ account.accountNumber }}" *ngFor="let account of activeAccounts">
+                              {{ account.accountNumber }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="revokeAccount()">Revoke account</button>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -105,13 +105,10 @@ public class BankController {
 			return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	  @GetMapping("/export/{bankId}")
-	  @ResponseBody
-	  public void exportToPdf(@PathVariable("bankId") Long bankId,HttpServletResponse response) throws ParseException, JRException, SQLException, IOException {
-		  bankServiceImpl.exportToPdf(bankId,response);
-	  }
-	
-	
-	
+
+    @GetMapping("/export/{bankId}")
+    @ResponseBody
+    public void exportToPdf(@PathVariable("bankId") Long bankId,HttpServletResponse response) throws ParseException, JRException, SQLException, IOException {
+	    bankServiceImpl.exportToPdf(bankId,response);
+    }
 }

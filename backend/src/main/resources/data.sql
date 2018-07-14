@@ -19,13 +19,13 @@ insert into bank(bank_id,bank_pib,bank_name,bank_address,bank_email,bank_web,ban
 values(3,'123456788','Erste banka','Bulvear nardonog fronta 100','erstelna@mail.rs','www.erste.com','024/525-111','123-123',true,'98456456','666-000-000',2);
 
 insert into exchange_list(date, number_of_exchange_list, used_since, bank_bank_id) 
-values('2017-10-15', 123, '2017-10-1', 1);
+values('2018-10-15', 123, '2018-10-1', 1);
 
 insert into exchange_list(date, number_of_exchange_list, used_since, bank_bank_id) 
-values('2017-2-15', 222, '2014-10-1', 1);
+values('2018-2-15', 222, '2018-10-1', 1);
 
 insert into exchange_list(date, number_of_exchange_list, used_since, bank_bank_id) 
-values('2017-1-2', 321, '2017-10-1', 2);
+values('2018-1-2', 321, '2018-10-1', 2);
 
 insert into currency_exchange(buy_rate, middle_rate, sell_rate, exchange_list_id, primary_currency_id, according_to_currency_id) 
 values (321, 320, 319, 1, 1, 2);
@@ -44,35 +44,35 @@ insert into client (client_id, name, surname, email, password, address, date_of_
 insert into client (client_id, name, surname, email, password, address, date_of_birth) values (2, 'Jovan', 'Jovanovic', 'j@j.com', 'passpass', 'Bulevar Oslovodjenja 43', '04/02/1992');
 insert into client (client_id, name, surname, email, password, address, date_of_birth) values (3, 'Goran', 'Goranovic', 'g@g.com', 'passpass', 'Bulevar Oslovodjenja 42', '06/12/1985');
 
-insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(1,'333-111-333','2017-05-05',true,1,1, 1);
-insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(2,'222-111-444','2017-05-06',true,3,2, 2);
-insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(3,'666-111-333','2017-06-03',true,2,3, 3);
+insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(1,'333-111-333','2018-05-05',true,1,1, 1);
+insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(2,'222-111-444','2018-05-06',true,3,2, 2);
+insert into account(account_id,account_num,account_date,account_active,bank_id,client_id, currency_id) values(3,'666-111-333','2018-06-03',true,2,3, 3);
 
-insert into analytical_statement(amount, approval_authorization_number, approval_model, currency_date, date_of_receipt, 
+insert into analytical_statement(amount, analytical_statement_mode, approval_authorization_number, approval_model, currency_date, date_of_receipt, 
 								 debit_authorization_number, error_type, model, originator, originator_account, purpose, recipient,
 								 recipient_account, payment, urgently, currency_id,
 								 place_of_acceptance_id) 
-	   value (15000.00, '123456789', '97', '2017-05-09', '2017-05-09', '100018356', 'IZVRSEN_NALOG', '97',
+	   value (15000.00, 'PAYOUT', '123456789', '97', '2018-05-09', '2018-05-09', '100018356', 'IZVRSEN_NALOG', '97',
 	   		  'Pera Peric, Novi Sad', '333-111-333', 'Uplata poreza na promet proizvoda', 'Poreska uprava',
 	   		  '222-714121843-73', false, false, 1, 2);
-insert into analytical_statement(amount, approval_authorization_number, approval_model, currency_date, date_of_receipt, 
+insert into analytical_statement(amount, analytical_statement_mode,approval_authorization_number, approval_model, currency_date, date_of_receipt, 
 								 debit_authorization_number, error_type, model, originator, originator_account, purpose, recipient,
 								 recipient_account, payment, urgently, currency_id,
 								 place_of_acceptance_id) 
-	   value (13500.00, '123456789', '97', '2017-05-16', '2017-05-16', '100018356', 'IZVRSEN_NALOG', '97',
+	   value (13500.00, 'PAYMENT', '123456789', '97', '2018-05-16', '2018-05-16', '100018356', 'IZVRSEN_NALOG', '97',
 	   		  'Igre na srecu, Beograd', '222-111-333', 'Dobitag na greb greb kartici', 'Ana Maric, Novi Sad',
 	   		  '333-111-333', true, false, 1, 1);	   		  
-insert into analytical_statement(amount, approval_authorization_number, approval_model, currency_date, date_of_receipt, 
+insert into analytical_statement(amount, analytical_statement_mode, approval_authorization_number, approval_model, currency_date, date_of_receipt, 
 								 debit_authorization_number, error_type, model, originator, originator_account, purpose, recipient,
 								 recipient_account, payment, urgently, currency_id,
 								 place_of_acceptance_id) 
-	   value (1500.00, '123456789', '97', '2017-06-03', '2017-06-03', '100018356', 'IZVRSEN_NALOG', '97',
+	   value (1500.00, 'PAYOUT', '123456789', '97', '2018-06-03', '2018-06-03', '100018356', 'IZVRSEN_NALOG', '97',
 	   		  'Stefan Popic, Doze Djerdja, Novi Sad', '666-111-333', 'Uplata za overu semestra', 'Fakultet tehnickih nauka, Trg Dositeja Obradovica 1, Novi Sad',
 	   		  '840-714121843-73', false, false, 3, 1);
 
 insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
-values(1, '2017-05-09', 1, 50000, 15000, 1, 0, 35000,1);
+values(1, '2018-05-09', 1, 50000, 15000, 1, 0, 35000,1);
 insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
-values(2, '2017-05-16', 1, 35000, 0, 1, 13500, 48500,1);
+values(2, '2018-05-16', 1, 35000, 0, 1, 13500, 48500,1);
 insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
-values(3, '2017-06-03', 3, 0, 1500, 1, 0, -1500,2);
+values(3, '2018-06-03', 3, 0, 1500, 1, 0, -1500,2);
