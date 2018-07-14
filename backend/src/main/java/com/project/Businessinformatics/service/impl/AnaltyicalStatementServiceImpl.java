@@ -169,30 +169,33 @@ public class AnaltyicalStatementServiceImpl implements AnaltyicalStatementServic
 	public void exportToPdf(Long accountId, Date startDate, Date endDate, HttpServletResponse response)
 			throws JRException, SQLException, IOException {
 		Account a = accountService.getAccount(accountId);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	    String sDate = dateFormatter.format(startDate);
+	    String eDate = dateFormatter.format(endDate);
 		Map<String, Object> params = new HashMap<>();
 		params.put("bankAccount", a.getAccountNumber());
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
+		params.put("startDate",sDate);
+		params.put("endDate", eDate);
+		System.out.println();
 		params.put("client", a.getClient().getName() + " " + a.getClient().getSurname());
-//		URL url = this.getClass().getClassLoader().getResource("jasper/logo.png");
-//		params.put("logo", url
 		FileInputStream fileInputStream;
 		params.put("address", a.getClient().getAddress());
-		URL filePath = this.getClass().getClassLoader().getResource("jasper/BankReport.jasper");
+		String path = System.getProperty("user.dir")+"\\src\\main\\resources\\jasper\\BankReport.jasper";
+		System.out.println("path "+path);
+		URL filePath = new File(path).toURI().toURL();
 		System.out.println("file "+filePath.openStream());
 		JasperPrint jp = JasperFillManager.fillReport(filePath.openStream(),
 				params, dataSource.getConnection());
 		File pdf = new File(
 				System.getProperty("user.home") + "/Downloads/" + "izvestaj-" + a.getAccountNumber() + ".pdf");
 		FileOutputStream out = new FileOutputStream(pdf);
-		JasperExportManager.exportReportToPdfStream(jp, out);
+		JasperExportManager.exportReportToPdfFile(jp, pdf.getAbsolutePath());
 		fileInputStream = new FileInputStream(pdf);
 		response.setContentLengthLong(pdf.length());
 		IOUtils.copy(fileInputStream, response.getOutputStream());
 		fileInputStream.close();
 		out.close();
 		response.flushBuffer();
-		pdf.delete();
 	}
 	
 	@Override

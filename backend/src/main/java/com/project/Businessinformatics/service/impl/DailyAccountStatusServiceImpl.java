@@ -1,5 +1,7 @@
 package com.project.Businessinformatics.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -34,7 +36,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 	public DailyAccountStatus createDailyAccountStatus(Long accountId, DailyAccountStatus dailyAccountStatus, Date date) {
 		Account account = accountService.getAccount(accountId);
 		dailyAccountStatus.setAccount(account);
-		dailyAccountStatus.setDate(date);
+		dailyAccountStatus.setDate(date.toString());
 		return dailyAccountStatusRepository.save(dailyAccountStatus);
 	}
 
@@ -61,7 +63,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		temp.setPreviousAmount(dailyAccountStatus.getPreviousAmount());
 		temp.setTransferExpenses(dailyAccountStatus.getTransferExpenses());
 		temp.setTransferInFavor(dailyAccountStatus.getTransferInFavor());
-		temp.setDate(date);
+		temp.setDate(date.toString());
 		return dailyAccountStatusRepository.save(temp);
 	}
 
@@ -102,7 +104,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		return dailyAccountStatusRepository.searchDailyAccountStatuses(accountNumber, previousAmount, transferInFavor, numberOfChanges, transferExpenses, currentAmount, new Date(Long.MIN_VALUE), date);
 	}
 	
-	public DailyAccountStatus updateOriginatorDailyAccountStatus(AnalyticalStatement analyticalStatement){
+	public DailyAccountStatus updateOriginatorDailyAccountStatus(AnalyticalStatement analyticalStatement) throws ParseException{
 		DailyAccountStatus dailyAccountStatus = this.getLastDailyAccountStatus(analyticalStatement.getOriginatorAccount());
 		dailyAccountStatus.setNumberOfChanges(dailyAccountStatus.getNumberOfChanges() + 1);
 		dailyAccountStatus.setPreviousAmount(dailyAccountStatus.getCurrentAmount());
@@ -111,7 +113,7 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		return dailyAccountStatusRepository.save(dailyAccountStatus);
 	}
 	
-	public DailyAccountStatus updateRecipiantDailyAccountStatus(AnalyticalStatement analyticalStatement){
+	public DailyAccountStatus updateRecipiantDailyAccountStatus(AnalyticalStatement analyticalStatement) throws ParseException{
 		DailyAccountStatus dailyAccountStatus = this.getLastDailyAccountStatus(analyticalStatement.getRecipientAccount());
 		dailyAccountStatus.setNumberOfChanges(dailyAccountStatus.getNumberOfChanges() + 1);
 		dailyAccountStatus.setPreviousAmount(dailyAccountStatus.getCurrentAmount());
@@ -120,7 +122,8 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		return dailyAccountStatusRepository.save(dailyAccountStatus);
 	}
 	
-	public DailyAccountStatus getLastDailyAccountStatus(String accountNumber){
+	@SuppressWarnings("unused")
+	public DailyAccountStatus getLastDailyAccountStatus(String accountNumber) throws ParseException{
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -131,16 +134,19 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		Date endDate = calendar.getTime();
-				
 		DailyAccountStatus dailyAccountStatus = dailyAccountStatusRepository.findDailyAccountStatusByLastDateAndAccountNumber(accountNumber);
+
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	    String date = dateFormatter.format(new Date());
+	    Date dailyAccountStatusDate = dateFormatter.parse(dailyAccountStatus.getDate());
 		if(dailyAccountStatus == null) {
 			dailyAccountStatus = new DailyAccountStatus();
 			dailyAccountStatus.setAccount(accountService.getAccountByAccountNumber(accountNumber));
-			dailyAccountStatus.setDate(new Date());
-		}else if(dailyAccountStatus.getDate().before(startDate) || dailyAccountStatus.getDate().after(endDate)){
+			dailyAccountStatus.setDate(date);
+		}else if(dailyAccountStatusDate.before(startDate) || dailyAccountStatusDate.after(endDate)){
 			DailyAccountStatus newDailyAccountStatus = new DailyAccountStatus();
 			newDailyAccountStatus.setAccount(dailyAccountStatus.getAccount());
-			newDailyAccountStatus.setDate(new Date());
+			newDailyAccountStatus.setDate(date);
 			newDailyAccountStatus.setCurrentAmount(dailyAccountStatus.getCurrentAmount());
 			newDailyAccountStatus.setPreviousAmount(dailyAccountStatus.getPreviousAmount());
 			return newDailyAccountStatus;
@@ -161,8 +167,10 @@ public class DailyAccountStatusServiceImpl implements DailyAccountStatusService{
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		Date endDate = calendar.getTime();
-		
-		return this.dailyAccountStatusRepository.findDailyAccountStatusByAccountAndDate(accountId, startDate, endDate);
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	    String sDate = dateFormatter.format(startDate);
+	    String eDate = dateFormatter.format(endDate);
+		return this.dailyAccountStatusRepository.findDailyAccountStatusByAccountAndDate(accountId, sDate, eDate);
 	}
 	
 }

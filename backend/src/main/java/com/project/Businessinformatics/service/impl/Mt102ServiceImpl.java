@@ -16,7 +16,6 @@ public class Mt102ServiceImpl implements Mt102Service {
 	
 	@Override
 	public Mt102Request save(Mt102Request mt102Request) {
-		// TODO Auto-generated method stub
 		return mt102Repository.save(mt102Request);
 	}
 

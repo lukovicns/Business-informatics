@@ -1,5 +1,6 @@
 package com.project.Businessinformatics.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -21,6 +22,6 @@ public interface AccountService {
 	public Collection<Account> searchWithActive(String accountNumber, Date openingMin, Date openingMax, String bankName, String name, String surname, String currency, boolean active);
 	
 	Account getAccountByAccountNumber(String accountNumber);
-	void transferAccount(Account account, String accountNumber) throws JAXBException, DatatypeConfigurationException;
+	void transferAccount(Account account, String accountNumber) throws JAXBException, DatatypeConfigurationException, ParseException;
 
 }

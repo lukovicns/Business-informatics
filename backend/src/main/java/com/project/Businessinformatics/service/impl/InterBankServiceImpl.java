@@ -85,7 +85,6 @@ public class InterBankServiceImpl implements InterBankService {
 			jaxbMarshaller.marshal(mt103Request, System.out);
 
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

@@ -38,7 +38,6 @@ public class Bank implements Serializable {
 	@Column(name = "bank_id", updatable = false, nullable = false, insertable=false)
 	private Long id;
 
-	// lista kursnih lista...
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, targetEntity = ExchangeList.class, mappedBy = "bank")
 	private Set<ExchangeList> exchangeLists;
 
@@ -50,7 +49,7 @@ public class Bank implements Serializable {
 	@JoinColumn(name="country_id")
 	private Country country;
 
-	@Column(name = "BANK_PIB", nullable = false, length = 10)
+	@Column(name = "BANK_PIB", nullable = false, length = 10, unique = true)
 	private String pib;
 
 	@Column(name = "BANK_NAME", nullable = false, length = 120)
@@ -75,7 +74,7 @@ public class Bank implements Serializable {
 	private boolean banka;
 
 	@XmlElement(name = "swift", required = true)
-	@Column(name = "BANK_SWT", nullable = false, length = 8)
+	@Column(name = "BANK_SWT", nullable = false, length = 8, unique = true)
 	private String swift;
 
 	@XmlElement(name = "transactionAccount", required = true)

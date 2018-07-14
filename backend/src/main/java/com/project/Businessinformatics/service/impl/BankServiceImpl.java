@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,12 +151,11 @@ public class BankServiceImpl implements BankService {
 	    Map<String,Object> params = new HashMap<>();
 	    System.out.println("bank "+b.getSwift());
 	    params.put("bank", b.getSwift());
-	    URL url = this.getClass().getClassLoader().getResource("jasper/logo.png");
-	    params.put("logo", url);
 	    FileInputStream fileInputStream;
 	    System.out.println("datasource "+dataSource.getConnection().toString());
-		JasperPrint jp  = JasperFillManager.fillReport(getClass().getResource("/jasper/BankReport.jasper").openStream(),params, dataSource.getConnection());
-	    File pdf = new File("D:" + "/Downloads/" + "izvestajBanka-"+b.getSwift()+".pdf");
+		JasperPrint jp  = JasperFillManager.fillReport(getClass().getResource("/jasper/BankAccountReport.jasper").openStream(),params, dataSource.getConnection());
+		File pdf = new File(
+				System.getProperty("user.home") + "/Downloads/" + "izvestajBanka-" + bankId + ".pdf");
 		FileOutputStream out = new FileOutputStream(pdf);
 		JasperExportManager.exportReportToPdfStream(jp, out);
 		fileInputStream = new FileInputStream(pdf);

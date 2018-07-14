@@ -1,5 +1,6 @@
 package com.project.Businessinformatics.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -70,7 +71,7 @@ public class AccountController {
 	@RequestMapping(value = "delete/{accountId}/{transverAcc}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Account> deleteAccount(@PathVariable("accountId") Long accountId,
-			@PathVariable("transverAcc") String transverAcc) throws JAXBException, DatatypeConfigurationException {
+			@PathVariable("transverAcc") String transverAcc) throws JAXBException, DatatypeConfigurationException, ParseException {
 		Account account = accountServiceImpl.deleteAccount(accountId);
 		if (account != null) {
 			revokedAccountServiceImpl.createRevokedAccount(account, transverAcc);

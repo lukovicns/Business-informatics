@@ -16,7 +16,7 @@ insert into bank(bank_id,bank_pib,bank_name,bank_address,bank_email,bank_web,ban
 values(2,'123456789','Komercijalna banka','Bulvear nardonog fronta 20','komercijalna@mail.rs','www.komercijalna.com','024/555-131','444-444',true,'12345678','222-000-000',1);
 
 insert into bank(bank_id,bank_pib,bank_name,bank_address,bank_email,bank_web,bank_tel,bank_fax,bank_act,bank_swt,bank_tr_acc,country_id)
-values(3,'123456789','Erste banka','Bulvear nardonog fronta 100','erstelna@mail.rs','www.erste.com','024/525-111','123-123',true,'98456456','666-000-000',2);
+values(3,'123456788','Erste banka','Bulvear nardonog fronta 100','erstelna@mail.rs','www.erste.com','024/525-111','123-123',true,'98456456','666-000-000',2);
 
 insert into exchange_list(date, number_of_exchange_list, used_since, bank_bank_id) 
 values('2017-10-15', 123, '2017-10-1', 1);
@@ -70,3 +70,9 @@ insert into analytical_statement(amount, approval_authorization_number, approval
 	   		  'Stefan Popic, Doze Djerdja, Novi Sad', '666-111-333', 'Uplata za overu semestra', 'Fakultet tehnickih nauka, Trg Dositeja Obradovica 1, Novi Sad',
 	   		  '840-714121843-73', false, false, 3, 1);
 
+insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
+values(1, '2017-05-09', 1, 50000, 15000, 1, 0, 35000,1);
+insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
+values(2, '2017-05-16', 1, 35000, 0, 1, 13500, 48500,1);
+insert into daily_account_status(id, date,account_account_id, previous_amount, transfer_expenses, number_of_changes, transfer_in_favor, current_amount,analytical_statement_analytical_statement_id)
+values(3, '2017-06-03', 3, 0, 1500, 1, 0, -1500,2);
